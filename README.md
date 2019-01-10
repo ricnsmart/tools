@@ -10,6 +10,6 @@ influx：时序型数据库，用来存储plc设备传输的数据和警报数�
 
 mbserver：modbus协议的辅助工具
 
-mq: 使用RabbitMQ的消息队列来处理远程消息交互
+mq: 使用RabbitMQ的消息队列来处理远程消息传递
 
 util：自定义的辅助函数工具包
