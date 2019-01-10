@@ -164,6 +164,7 @@ func Producer(queueName string, request []byte) error {
 	return nil
 }
 
+// worker使用时，必须手动ack
 func Worker(queueName string) (<-chan amqp.Delivery, error) {
 	ch, err := conn.Channel()
 
