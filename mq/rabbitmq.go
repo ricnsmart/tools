@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/labstack/gommon/log"
+	. "github.com/ricnsmart/tools/util"
 	"github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 	"time"
-	. "tools/util"
 )
 
 var (
