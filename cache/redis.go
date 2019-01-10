@@ -2,10 +2,16 @@ package cache
 
 import (
 	"github.com/go-redis/redis"
+	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/tools/util"
 )
 
 var RedisDB *redis.Client
+
+const (
+	connectRedisFailed  = "Failed to connect to Redis"
+	connectRedisSucceed = "Success to connect to Redis"
+)
 
 func Connect(address, password string) {
 	/*Redis*/
@@ -17,5 +23,7 @@ func Connect(address, password string) {
 
 	pong, err := RedisDB.Ping().Result()
 
-	util.FatalOnError(err, "连接失败", pong)
+	util.FatalOnError(err, connectRedisFailed, pong)
+
+	log.Info(connectRedisSucceed)
 }

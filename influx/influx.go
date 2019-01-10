@@ -14,8 +14,9 @@ var (
 )
 
 const (
-	connectInfluxDBFailed = "Failed to connect to InfluxDB"
-	testInfluxDBFailed    = "Failed to test connect InfluxDB"
+	connectInfluxDBFailed  = "Failed to connect to InfluxDB"
+	testInfluxDBFailed     = "Failed to test connect InfluxDB"
+	connectInfluxDBSucceed = "Success to connect to Redis"
 )
 
 func Connect(address, userName, password string) {
@@ -33,6 +34,8 @@ func Connect(address, userName, password string) {
 	duration, version, err := c.Ping(5 * time.Minute)
 
 	util.FatalOnError(err, testInfluxDBFailed, duration, version)
+
+	log.Info(connectInfluxDBSucceed)
 }
 
 func Write(measurement string, tags map[string]string, fields map[string]interface{}) (err error) {

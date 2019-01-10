@@ -13,7 +13,7 @@ import (
 var conn *amqp.Connection
 
 const (
-	connectFailed          = "Failed to connect to RabbitMQ"
+	connectRabbitMQFailed  = "Failed to connect to RabbitMQ"
 	openChannelFailed      = "Failed to open a channel"
 	declareQueueFailed     = "Failed to declare a queue"
 	bindQueueFailed        = "Failed to bind a queue"
@@ -21,6 +21,7 @@ const (
 	registerConsumerFailed = "Failed to register a consumer"
 	publishMessageFailed   = "Failed to publish a message"
 	setQoSFailed           = "Failed to set Qos"
+	connectRabbitMQSucceed = "Success to connect to RabbitMQ"
 )
 
 func Connect(userName, password, address string) {
@@ -30,7 +31,9 @@ func Connect(userName, password, address string) {
 
 	conn, err = amqp.Dial(url)
 
-	util.FatalOnError(err, connectFailed, url)
+	util.FatalOnError(err, connectRabbitMQFailed, url)
+
+	log.Info(connectRabbitMQSucceed)
 }
 
 // 普通模式
