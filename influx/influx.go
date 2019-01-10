@@ -16,7 +16,7 @@ var (
 const (
 	connectInfluxDBFailed  = "Failed to connect to InfluxDB"
 	testInfluxDBFailed     = "Failed to test connect InfluxDB"
-	connectInfluxDBSucceed = "Success to connect to Redis"
+	connectInfluxDBSucceed = "Success to connect to InfluxDB"
 )
 
 func Connect(address, userName, password string) {
