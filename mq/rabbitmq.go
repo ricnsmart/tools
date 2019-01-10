@@ -4,15 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/labstack/gommon/log"
-	. "github.com/ricnsmart/tools/util"
+	"github.com/ricnsmart/tools/util"
 	"github.com/satori/go.uuid"
 	"github.com/streadway/amqp"
 	"time"
 )
 
-var (
-	conn *amqp.Connection
-)
+var conn *amqp.Connection
 
 const (
 	connectFailed          = "Failed to connect to RabbitMQ"
@@ -32,9 +30,7 @@ func Connect(userName, password, address string) {
 
 	conn, err = amqp.Dial(url)
 
-	if err != nil {
-		log.Fatalf("%s: %s; url: %s", connectFailed, err, url)
-	}
+	util.FatalOnError(err, connectFailed, url)
 }
 
 // 普通模式
@@ -508,7 +504,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 func RPCServer(queueName string, f func([]byte) []byte) {
 	ch, err := conn.Channel()
 
-	FatalOnError(err, openChannelFailed)
+	util.FatalOnError(err, openChannelFailed)
 
 	q, err := ch.QueueDeclare(
 		queueName,
@@ -519,7 +515,7 @@ func RPCServer(queueName string, f func([]byte) []byte) {
 		nil,
 	)
 
-	FatalOnError(err, declareQueueFailed)
+	util.FatalOnError(err, declareQueueFailed)
 
 	err = ch.Qos(
 		1,
@@ -527,7 +523,7 @@ func RPCServer(queueName string, f func([]byte) []byte) {
 		false,
 	)
 
-	FatalOnError(err, setQoSFailed)
+	util.FatalOnError(err, setQoSFailed)
 
 	msgs, err := ch.Consume(
 		q.Name,
@@ -539,7 +535,7 @@ func RPCServer(queueName string, f func([]byte) []byte) {
 		nil,
 	)
 
-	FatalOnError(err, registerConsumerFailed)
+	util.FatalOnError(err, registerConsumerFailed)
 
 	forever := make(chan bool)
 
