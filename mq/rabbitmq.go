@@ -68,11 +68,9 @@ func Send(QueueName string, request []byte) error {
 		false,
 		false,
 		amqp.Publishing{
-			Headers:         amqp.Table{},    // 开启
-			DeliveryMode:    amqp.Persistent, // 消息 durable
-			ContentType:     "text/plain",
-			ContentEncoding: "",
-			Body:            request,
+			DeliveryMode: amqp.Persistent, // 消息 durable
+			ContentType:  "text/plain",
+			Body:         request,
 		})
 
 	if err != nil {
@@ -153,11 +151,9 @@ func Producer(queueName string, request []byte) error {
 		false,
 		false,
 		amqp.Publishing{
-			Headers:         amqp.Table{},    // 开启
-			DeliveryMode:    amqp.Persistent, // 消息 durable
-			ContentType:     "text/plain",
-			ContentEncoding: "",
-			Body:            request,
+			DeliveryMode: amqp.Persistent, // 消息 durable
+			ContentType:  "text/plain",
+			Body:         request,
 		})
 
 	if err != nil {
@@ -190,10 +186,23 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 		return nil, err
 	}
 
+	// 每个worker消费完上一个消息之后，mq才会发给它送下一个消息
+	// 如果worker繁忙，mq会转给其他worker
+	err = ch.Qos(
+		1,     // prefetch count
+		0,     // prefetch size
+		false, // global
+	)
+
+	if err != nil {
+		log.Error(setQoSFailed)
+		return nil, err
+	}
+
 	msgs, err := ch.Consume(
 		q.Name,
 		"",
-		true,
+		false, // 需要手动ack，否则会阻塞
 		false,
 		false,
 		false,
@@ -241,11 +250,10 @@ func Publish(exchangeName string, request []byte) error {
 		false,
 		false,
 		amqp.Publishing{
-			Headers:         amqp.Table{},    // 开启
-			DeliveryMode:    amqp.Persistent, // 消息 durable
-			ContentType:     "text/plain",
-			ContentEncoding: "",
-			Body:            request,
+			// 开启
+			DeliveryMode: amqp.Persistent, // 消息 durable
+			ContentType:  "text/plain",
+			Body:         request,
 		})
 
 	if err != nil {
