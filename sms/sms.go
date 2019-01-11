@@ -5,15 +5,19 @@ import (
 	"github.com/labstack/gommon/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	. "platform/config"
 	"time"
 )
 
-var cred credentials.TransportCredentials
+var (
+	cred credentials.TransportCredentials
+	smsAddress string
+)
 
-func Connect(host string) {
+func Connect(host ,address string) {
 	// 获取公钥凭证用于grpc
 	var err error
+
+	smsAddress = address
 
 	cred, err = credentials.NewClientTLSFromFile("config/ricnsmart.pem", host)
 
@@ -25,7 +29,7 @@ func Connect(host string) {
 func SendSMS(PhoneNumbers, TemplateCode string, TemplateParam string) (err error) {
 
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(SMS.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(smsAddress, grpc.WithTransportCredentials(cred))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

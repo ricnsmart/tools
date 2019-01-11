@@ -5,15 +5,19 @@ import (
 	"github.com/labstack/gommon/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	. "platform/config"
 	"time"
 )
 
-var cred credentials.TransportCredentials
+var (
+	cred credentials.TransportCredentials
+	dnsAddress string
+)
 
-func Connect(host string) {
+func Connect(host ,address string) {
 	// 获取公钥凭证用于grpc
 	var err error
+
+	dnsAddress = address
 
 	cred, err = credentials.NewClientTLSFromFile("config/ricnsmart.pem", host)
 
@@ -24,7 +28,7 @@ func Connect(host string) {
 
 func CheckDomainRecord(request *DomainRecord) (*CheckReply, error) {
 
-	conn, err := grpc.Dial(Dns.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("访问域名微服务失败: %v", err)
@@ -44,7 +48,7 @@ func CheckDomainRecord(request *DomainRecord) (*CheckReply, error) {
 
 func UpdateDomainRecord(request *DomainRecord) (*NullReply, error) {
 
-	conn, err := grpc.Dial(Dns.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("访问域名微服务失败: %v", err)
@@ -64,7 +68,7 @@ func UpdateDomainRecord(request *DomainRecord) (*NullReply, error) {
 
 func DeleteGetDomainRecord(request *DelRequest) (*NullReply, error) {
 
-	conn, err := grpc.Dial(Dns.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("访问域名微服务失败: %v", err)
@@ -85,7 +89,7 @@ func DeleteGetDomainRecord(request *DelRequest) (*NullReply, error) {
 func GetDomainRecords(request *GetRequest) (*GetReply, error) {
 
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(Dns.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("访问域名微服务失败: %v", err)
@@ -106,7 +110,7 @@ func GetDomainRecords(request *GetRequest) (*GetReply, error) {
 func AddDomainRecord(record *DomainRecord) (*DomainRecord, error) {
 
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(Dns.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("访问域名微服务失败: %v", err)
@@ -126,7 +130,7 @@ func AddDomainRecord(record *DomainRecord) (*DomainRecord, error) {
 
 func SetDomainRecordStatus(request *DomainRecord) (*NullReply, error) {
 
-	conn, err := grpc.Dial(Dns.Address, grpc.WithTransportCredentials(cred))
+	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
 		log.Fatalf("访问域名微服务失败: %v", err)
