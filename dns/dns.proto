@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package dns;
+
+service DNS {
+
+    // 分页获取域名解析列表
+    rpc GetDomainRecords (GetRequest) returns (GetReply) {}
+
+    // 批量添加域名解析
+    rpc AddDomainRecord (DomainRecord) returns (DomainRecord) {}
+
+    // 检查域名解析记录
+    rpc CheckDomainRecord (DomainRecord) returns (CheckReply) {}
+
+    // 删除域名解析
+    rpc DeleteDomainRecord (DelRequest) returns (NullReply) {}
+
+    // 修改域名解析
+    rpc UpdateDomainRecord (DomainRecord) returns (NullReply) {}
+
+    //设置解析记录状态
+    rpc SetDomainRecordStatus (DomainRecord) returns (NullReply) {}
+}
+
+message DomainRecord{
+    string  DomainName =1;
+    string	RecordId   =2;
+    string	RR         =3;
+    string	Type       =4;
+    string	Value      =5;
+    string	Status     =6;
+}
+
+message GetRequest {
+  string DomainName = 1 ;
+  string PageNumber = 2 ;
+  string PageSize   = 3 ;
+  string RR         = 4 ;
+  string Value      = 5 ;
+  string Type       = 6 ;
+}
+
+message GetReply {
+    uint32   TotalCount = 1;
+    repeated DomainRecord domainRecord = 2;
+}
+
+message NullReply {}
+
+message DelRequest{
+    string RecordId =1;
+}
+
+message CheckReply{
+    bool IsExist  = 1;
+}

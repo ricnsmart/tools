@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package sms;
+
+service SMS {
+    rpc SendSms (SMSRequest) returns (SMSReply) {}
+}
+
+message SMSRequest {
+  string PhoneNumbers = 1;
+  string TemplateParam = 2;
+  string TemplateCode = 3;
+}
+
+message SMSReply {}
