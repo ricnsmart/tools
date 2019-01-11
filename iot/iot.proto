@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+package iot;
+
+service IOT {
+
+    //在指定产品下批量自定义设备名称
+    rpc BatchCheckDeviceNames (BatchDeviceInfo) returns (BatchRegisterReply){}
+
+    //在指定产品下批量注册多个设备
+    rpc BatchRegisterDeviceWithApplyId (BatchRegisterRequest)  returns (BatchRegisterReply) {}
+
+    // 查询指定产品下的所有设备列表
+    rpc GetAllDevices (GetRequest) returns (GetReply) {}
+
+    // 从物联网平台删除设备
+    rpc DeleteDevice (Device) returns (NullReply) {}
+
+    //禁用指定设备
+    rpc DisableThing (Device)  returns (NullReply) {}
+
+    //启用指定设备
+    rpc EnableThing (Device)  returns (NullReply) {}
+
+    //向指定topic发布消息
+    rpc Pub (PubRequest) returns (PubReply) {}
+
+    //批量查看同一产品下指定设备的运行状态
+    rpc BatchGetDeviceState (BatchDeviceInfo) returns (GetDeviceStatusReply) {}
+
+    //查询批量注册的设备信息
+    rpc QueryPageByApplyId (QueryPageRequest) returns (QueryPageReply) {}
+
+    //查询指定设备的详细信息
+    rpc QueryDeviceDetail (Device) returns (QueryDeviceReply) {}
+
+    //查看指定设备的运行状态
+    rpc GetDeviceStatus (Device) returns (GetSingleDeviceStatusReply) {}
+}
+
+message Device{
+    string  DeviceName      = 1;
+    string	ProductKey      = 2;
+}
+
+message DeviceInfo{
+    string  DeviceId        = 1;
+    string  DeviceName      = 2;
+    string  DeviceSecret    = 3;
+    string	GmtCreate       = 4;
+    string	GmtModified     = 5;
+}
+
+message BatchDeviceInfo {
+    string          ProductKey     = 1;
+    repeated string DeviceName     = 2;
+}
+
+
+message GetRequest {
+    string ProductKey  = 1;
+    string PageSize    = 2;
+    string CurrentPage = 3;//指定从返回结果中的第几页开始显示。默认值是 1。
+
+}
+
+message BatchRegisterRequest {
+    string ProductKey       = 1;
+    string ApplyId          = 2;
+}
+
+
+message PubRequest{
+    string  ProductKey      = 1;
+    string  TopicFullName   = 2;
+    string  MessageContent  = 3;
+    string  Qos             = 4;
+}
+
+message QueryPageRequest{
+    string  ApplyId        = 1;
+    string  PageSize       = 2;
+    string  CurrentPage    = 3;//指定从返回结果中的第几页开始显示。默认值是 1。
+}
+
+message ApplyData {
+    uint64  ApplyId         = 1;
+}
+
+message Data {
+    string  DeviceId        = 1;
+    string  DeviceName      = 2;
+    string  DeviceSecret    = 3;
+    string	GmtCreate       = 4;
+    string	GmtModified     = 5;
+}
+
+message GetSingleDeviceStatusReply {
+    DeviceStatusInfo Data  = 1;
+}
+
+message DeviceStatusInfo {
+    string Status  = 1;
+}
+
+message  ApplyDeviceInfo{
+    string  DeviceId        = 1;
+    string  DeviceName      = 2;
+    string  DeviceSecret    = 3;
+}
+
+message DeviceStatus{
+    string DeviceName     = 1;
+    string Status         = 2;
+}
+
+message GetReply {
+    uint32 PageCount 	    = 1;
+    uint32 PageSize 	    = 2;
+    uint32 Page 	 	    = 3;
+    uint32 Total            = 4;
+    repeated DeviceInfo  Data  = 5;
+}
+
+message BatchRegisterReply{
+    ApplyData Data          = 1;
+}
+
+message PubReply{
+    string MessageId =1;
+}
+
+message GetDeviceStatusReply{
+    repeated DeviceStatus DeviceStatusList  = 1;
+}
+
+message QueryPageReply{
+    uint32 PageCount 	                   = 1;
+    uint32 PageSize 	                   = 2;
+    uint32 Page 	 	                   = 3;
+    uint32 Total                           = 4;
+    repeated  ApplyDeviceInfo ApplyDeviceList   = 5;//指定从返回结果中的第几页开始显示。默认值是 1。
+}
+
+message QueryDeviceReply{
+    Data  Data    = 1;
+}
+
+message NullReply {}
