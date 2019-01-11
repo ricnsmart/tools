@@ -7,10 +7,3 @@ func FatalOnError(err error, msg string, data ...interface{}) {
 		log.Fatalf("%s: %s ; data: %v", msg, err, data)
 	}
 }
-
-type Reply struct {
-	Code    int
-	Data    interface{}
-	Message string
-	Name    string
-}
