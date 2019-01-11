@@ -3,6 +3,7 @@ package iot
 import (
 	"context"
 	"github.com/labstack/gommon/log"
+	"github.com/ricnsmart/tools/util"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"time"
@@ -13,6 +14,11 @@ var (
 	iotAddress string
 )
 
+const (
+	connectIotFailed  = "Failed to connect to Iot"
+	connectIotSucceed = "Success to connect to Iot"
+)
+
 func Connect(host, address string) {
 	// 获取公钥凭证用于grpc
 	var err error
@@ -21,9 +27,9 @@ func Connect(host, address string) {
 
 	cred, err = credentials.NewClientTLSFromFile("config/ricnsmart.pem", host)
 
-	if err != nil {
-		log.Fatalf("Failed to generate credentials %v", err)
-	}
+	util.FatalOnError(err, connectIotFailed)
+
+	log.Info(connectIotSucceed)
 }
 
 func BatchCheckDeviceNames(request *BatchDeviceInfo) (*BatchRegisterReply, error) {

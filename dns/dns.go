@@ -3,6 +3,7 @@ package dns
 import (
 	"context"
 	"github.com/labstack/gommon/log"
+	"github.com/ricnsmart/tools/util"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"time"
@@ -13,6 +14,11 @@ var (
 	dnsAddress string
 )
 
+const (
+	connectDnsFailed  = "Failed to connect to Dns"
+	connectDnsSucceed = "Success to connect to Dns"
+)
+
 func Connect(host, address string) {
 	// 获取公钥凭证用于grpc
 	var err error
@@ -21,9 +27,9 @@ func Connect(host, address string) {
 
 	cred, err = credentials.NewClientTLSFromFile("config/ricnsmart.pem", host)
 
-	if err != nil {
-		log.Fatalf("Failed to generate credentials %v", err)
-	}
+	util.FatalOnError(err, connectDnsFailed)
+
+	log.Info(connectDnsSucceed)
 }
 
 func CheckDomainRecord(request *DomainRecord) (*CheckReply, error) {
