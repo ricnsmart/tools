@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	cred credentials.TransportCredentials
+	cred       credentials.TransportCredentials
 	iotAddress string
-	)
+)
 
-func Connect(host ,address string) {
+func Connect(host, address string) {
 	// 获取公钥凭证用于grpc
 	var err error
 
