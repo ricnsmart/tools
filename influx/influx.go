@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	c      client.Client
-	DbName string
+	c  client.Client
+	db string
 )
 
 const (
@@ -19,7 +19,8 @@ const (
 	connectInfluxDBSucceed = "Success to connect to InfluxDB"
 )
 
-func Connect(address, userName, password string) {
+// 除了需要指定连接的用户名、密码、地址，还需要指定db
+func Connect(address, userName, password, dbName string) {
 
 	var err error
 
@@ -35,17 +36,19 @@ func Connect(address, userName, password string) {
 
 	util.FatalOnError(err, testInfluxDBFailed, duration, version)
 
+	db = dbName
+
 	log.Info(connectInfluxDBSucceed)
 }
 
 func Write(measurement string, tags map[string]string, fields map[string]interface{}) (err error) {
 	// Create a new point batch
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-		Database:  DbName,
+		Database:  db,
 		Precision: "s",
 	})
 	if err != nil {
-		log.Error(DbName, err)
+		log.Error(db, err)
 		return
 	}
 
@@ -67,20 +70,42 @@ func Write(measurement string, tags map[string]string, fields map[string]interfa
 	return
 }
 
-func Query(cmd string) (res []client.Result, err error) {
+func Query(cmd string) (map[string]interface{}, error) {
 	q := client.Query{
 		Command:  cmd,
-		Database: DbName,
+		Database: db,
 	}
-	if response, err := c.Query(q); err == nil {
-		if response.Error() != nil {
-			return res, response.Error()
+
+	response, err := c.Query(q)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err == nil && response.Error() != nil {
+		return nil, response.Error()
+	}
+
+	m := make(map[string]interface{})
+
+	if len(response.Results) > 0 && len(response.Results[0].Series) > 0 {
+
+		result := response.Results[0].Series[0]
+
+		columns := result.Columns
+
+		values := result.Values
+
+		for _, value := range values {
+			for index, column := range columns {
+				m[column] = value[index]
+			}
 		}
-		res = response.Results
 	} else {
-		return res, err
+		log.Error(response)
 	}
-	return res, nil
+
+	return m, nil
 }
 
 // 防止float类型 0，1等存成int类型
