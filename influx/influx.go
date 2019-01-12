@@ -70,7 +70,7 @@ func Write(measurement string, tags map[string]string, fields map[string]interfa
 	return
 }
 
-func Query(cmd string) (map[string]interface{}, error) {
+func Query(cmd string) ([]map[string]interface{}, error) {
 	q := client.Query{
 		Command:  cmd,
 		Database: db,
@@ -88,6 +88,8 @@ func Query(cmd string) (map[string]interface{}, error) {
 
 	m := make(map[string]interface{})
 
+	var slc []map[string]interface{}
+
 	if len(response.Results) > 0 && len(response.Results[0].Series) > 0 {
 
 		result := response.Results[0].Series[0]
@@ -100,12 +102,13 @@ func Query(cmd string) (map[string]interface{}, error) {
 			for index, column := range columns {
 				m[column] = value[index]
 			}
+			slc = append(slc, m)
 		}
 	} else {
 		log.Error(response)
 	}
 
-	return m, nil
+	return slc, nil
 }
 
 // 防止float类型 0，1等存成int类型

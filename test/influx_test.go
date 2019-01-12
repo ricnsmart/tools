@@ -1,6 +1,7 @@
 package test
 
 import (
+	"encoding/json"
 	"github.com/ricnsmart/tools/influx"
 	"log"
 	"testing"
@@ -16,5 +17,5 @@ func TestQuery(t *testing.T) {
 		return
 	}
 
-	log.Print(m)
+	log.Print(m[0]["total"].(json.Number))
 }
