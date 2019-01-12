@@ -140,7 +140,7 @@ func Joint(body, table, option string, or *Or, andQuery []string) (cmd string) {
 
 	cmd = fmt.Sprintf(`%v from "%v"`, body, table)
 
-	if or != nil {
+	if or != nil && len(or.Keys) > 0 {
 		var tmp []string
 
 		for _, key := range or.Keys {
