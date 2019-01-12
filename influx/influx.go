@@ -1,10 +1,12 @@
 package influx
 
 import (
+	"fmt"
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/tools/util"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -18,6 +20,11 @@ const (
 	testInfluxDBFailed     = "Failed to test connect InfluxDB"
 	connectInfluxDBSucceed = "Success to connect to InfluxDB"
 )
+
+type Or struct {
+	Body string
+	Keys []string
+}
 
 // 除了需要指定连接的用户名、密码、地址，还需要指定db
 func Connect(address, userName, password, dbName string) {
@@ -71,6 +78,7 @@ func Write(measurement string, tags map[string]string, fields map[string]interfa
 }
 
 func Query(cmd string) ([]map[string]interface{}, error) {
+
 	q := client.Query{
 		Command:  cmd,
 		Database: db,
@@ -126,4 +134,29 @@ func SolveFloatInt(fields map[string]interface{}) {
 			fields[key] = strconv.FormatUint(value.(uint64), 10)
 		}
 	}
+}
+
+func Joint(body, table, option string, or *Or, andQuery []string) (cmd string) {
+
+	cmd = fmt.Sprintf(`%v from "%v"`, body, table)
+
+	if or != nil {
+		var tmp []string
+
+		for _, key := range or.Keys {
+			tmp = append(tmp, fmt.Sprintf(or.Body, key))
+		}
+
+		andQuery = append(andQuery, strings.Join(tmp, " OR "))
+	}
+
+	if len(andQuery) > 0 {
+		cmd = fmt.Sprintf(`%v where %v`, cmd, strings.Join(andQuery, " AND "))
+	}
+
+	if option != "" {
+		cmd = fmt.Sprintf(`%v %v`, cmd, option)
+	}
+
+	return
 }
