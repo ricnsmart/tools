@@ -94,8 +94,6 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 		return nil, response.Error()
 	}
 
-	m := make(map[string]interface{})
-
 	var slc []map[string]interface{}
 
 	if len(response.Results) > 0 && len(response.Results[0].Series) > 0 {
@@ -107,6 +105,9 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 		values := result.Values
 
 		for _, value := range values {
+
+			m := make(map[string]interface{})
+
 			for index, column := range columns {
 				m[column] = value[index]
 			}
