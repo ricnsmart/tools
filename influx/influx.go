@@ -96,7 +96,7 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 
 	var slc []map[string]interface{}
 
-	if len(response.Results) > 0 && len(response.Results[0].Series) > 0 {
+	if len(response.Results[0].Series) > 0 {
 
 		result := response.Results[0].Series[0]
 
@@ -113,8 +113,6 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 			}
 			slc = append(slc, m)
 		}
-	} else {
-		log.Error(response)
 	}
 
 	return slc, nil
