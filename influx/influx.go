@@ -146,7 +146,7 @@ func Joint(body, table, option string, or *Or, andQuery []string) (cmd string) {
 			tmp = append(tmp, fmt.Sprintf(or.Body, key))
 		}
 
-		andQuery = append(andQuery, strings.Join(tmp, " OR "))
+		andQuery = append(andQuery, fmt.Sprintf(`(%v)`, strings.Join(tmp, " OR ")))
 	}
 
 	if len(andQuery) > 0 {
