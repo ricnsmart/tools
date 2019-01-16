@@ -3,7 +3,7 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/pkg/errors"
+	"errors"
 	"time"
 )
 
