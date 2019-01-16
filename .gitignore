@@ -16,3 +16,4 @@
 *.key
 
 go.sum
+bin/temp
