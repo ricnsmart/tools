@@ -290,7 +290,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, *amqp.Channel, error)
 	q, err := ch.QueueDeclare(
 		"",
 		true,
-		false,
+		true,
 		true,
 		false,
 		nil,
