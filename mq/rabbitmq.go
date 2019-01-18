@@ -401,7 +401,7 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, *amqp.Channel
 	q, err := ch.QueueDeclare(
 		"",
 		false,
-		false,
+		true,
 		true,
 		false,
 		nil,
@@ -456,7 +456,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 	q, err := ch.QueueDeclare(
 		"",
 		false,
-		false,
+		true,
 		true,
 		false,
 		nil,
