@@ -2,6 +2,11 @@
 
 git tag | while read line
     do
+       if [[ ! ${line} =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]] ;then
+        echo "版本号不符合规范：" ${line}
+        continue
+       fi
+
 #      获取当前版本号的数组
        current=($(echo $line |tr -d "v"|tr "." "\n"|awk '{print $1}'))
 
