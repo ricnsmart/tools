@@ -264,12 +264,12 @@ func Publish(exchangeName string, request []byte) error {
 	return nil
 }
 
-func Subscribe(exchangeName string) (<-chan amqp.Delivery, *amqp.Channel, error) {
+func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 	ch, err := conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	err = ch.ExchangeDeclare(
@@ -284,7 +284,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, *amqp.Channel, error)
 
 	if err != nil {
 		log.Error(declareExchangeFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	q, err := ch.QueueDeclare(
@@ -298,7 +298,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, *amqp.Channel, error)
 
 	if err != nil {
 		log.Error(declareQueueFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	err = ch.QueueBind(
@@ -310,7 +310,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, *amqp.Channel, error)
 
 	if err != nil {
 		log.Error(bindQueueFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	msgs, err := ch.Consume(
@@ -325,10 +325,10 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, *amqp.Channel, error)
 
 	if err != nil {
 		log.Error(registerConsumerFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
-	return msgs, ch, err
+	return msgs, err
 }
 
 // 路由模式
@@ -375,12 +375,12 @@ func RoutePublish(exchangeName, key string, request []byte) error {
 	return nil
 }
 
-func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, *amqp.Channel, error) {
+func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, error) {
 	ch, err := conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	err = ch.ExchangeDeclare(
@@ -395,7 +395,7 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, *amqp.Channel
 
 	if err != nil {
 		log.Error(declareExchangeFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	q, err := ch.QueueDeclare(
@@ -409,7 +409,7 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, *amqp.Channel
 
 	if err != nil {
 		log.Error(declareQueueFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	err = ch.QueueBind(
@@ -421,7 +421,7 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, *amqp.Channel
 
 	if err != nil {
 		log.Error(bindQueueFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
 	msgs, err := ch.Consume(
@@ -436,10 +436,10 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, *amqp.Channel
 
 	if err != nil {
 		log.Error(registerConsumerFailed)
-		return nil, nil, err
+		return nil, err
 	}
 
-	return msgs, ch, err
+	return msgs, err
 }
 
 // RPC模式
