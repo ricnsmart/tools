@@ -4,7 +4,15 @@ import (
 	"errors"
 )
 
-type Exception int
+type (
+	Message interface {
+		Error() error
+		Name() string
+		String() string
+	}
+
+	Exception int
+)
 
 var (
 	Success Exception = 2000
