@@ -1,9 +1,11 @@
 package cache
 
 import (
+	"encoding/json"
 	"github.com/go-redis/redis"
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/tools/util"
+	"time"
 )
 
 var RedisDB *redis.Client
@@ -26,4 +28,29 @@ func Connect(address, password string) {
 	util.FatalOnError(err, connectRedisFailed, pong)
 
 	log.Info(connectRedisSucceed)
+}
+
+func Publish(key string, i interface{}) error {
+
+	bytes, err := json.Marshal(i)
+
+	if err != nil {
+		return err
+	}
+
+	err = RedisDB.Publish(key, bytes).Err()
+
+	return err
+}
+
+func Set(key string, i interface{}, expiration time.Duration) error {
+	bytes, err := json.Marshal(i)
+
+	if err != nil {
+		return err
+	}
+
+	err = RedisDB.Set(key, bytes, expiration).Err()
+
+	return err
 }
