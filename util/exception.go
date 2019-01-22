@@ -36,7 +36,7 @@ func (m Exception) String() string {
 		str = fmt.Sprintf("解码失败")
 	case MarshalFailed:
 		str = fmt.Sprintf("编码失败")
-	case redisPublishFailed:
+	case RedisPublishFailed:
 		str = fmt.Sprintf("使用Redis发布消息失败")
 	case SetCacheFailed:
 		str = fmt.Sprintf("设置Redis缓存失败")
