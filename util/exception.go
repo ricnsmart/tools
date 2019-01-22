@@ -15,7 +15,7 @@ var (
 	UnmarshalFailed Exception = 6000
 	MarshalFailed   Exception = 6001
 
-	redisPublishFailed Exception = 7000
+	RedisPublishFailed Exception = 7000
 	SetCacheFailed     Exception = 7001
 	GetCacheFailed     Exception = 7002
 )
