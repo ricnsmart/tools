@@ -17,6 +17,8 @@ var (
 	RedisPublishFailed Exception = 7000
 	SetCacheFailed     Exception = 7001
 	GetCacheFailed     Exception = 7002
+
+	MQPublishFailed Exception = 8000
 )
 
 func (e Exception) Error() error {
@@ -41,6 +43,8 @@ func (e Exception) String() string {
 		str = "设置Redis缓存失败"
 	case GetCacheFailed:
 		str = "获取Redis缓存失败"
+	case MQPublishFailed:
+		str = "使用RabbitMQ发布消息失败"
 	default:
 		str = "未知的错误类型"
 	}
