@@ -2,7 +2,6 @@ package util
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Exception int
@@ -20,30 +19,55 @@ var (
 	GetCacheFailed     Exception = 7002
 )
 
-func (m Exception) Error() error {
-	return errors.New(m.String())
+func (e Exception) Error() error {
+	return errors.New(e.String())
 }
 
-func (m Exception) String() string {
+func (e Exception) String() string {
 	var str string
 
-	switch m {
+	switch e {
 	case Success:
-		str = fmt.Sprintf("成功")
+		str = "成功"
 	case InvalidParams:
-		str = fmt.Sprintf("非法参数")
+		str = "非法参数"
 	case UnmarshalFailed:
-		str = fmt.Sprintf("解码失败")
+		str = "解码失败"
 	case MarshalFailed:
-		str = fmt.Sprintf("编码失败")
+		str = "编码失败"
 	case RedisPublishFailed:
-		str = fmt.Sprintf("使用Redis发布消息失败")
+		str = "使用Redis发布消息失败"
 	case SetCacheFailed:
-		str = fmt.Sprintf("设置Redis缓存失败")
+		str = "设置Redis缓存失败"
 	case GetCacheFailed:
-		str = fmt.Sprintf("获取Redis缓存失败")
+		str = "获取Redis缓存失败"
 	default:
-		str = fmt.Sprintf("未知的错误类型")
+		str = "未知的错误类型"
+	}
+
+	return str
+}
+
+func (e Exception) Name() string {
+	var str string
+
+	switch e {
+	case Success:
+		str = "Success"
+	case InvalidParams:
+		str = "InvalidParams"
+	case UnmarshalFailed:
+		str = "UnmarshalFailed"
+	case MarshalFailed:
+		str = "MarshalFailed"
+	case RedisPublishFailed:
+		str = "RedisPublishFailed"
+	case SetCacheFailed:
+		str = "SetCacheFailed"
+	case GetCacheFailed:
+		str = "GetCacheFailed"
+	default:
+		str = "UnknownReason"
 	}
 
 	return str
