@@ -16,7 +16,8 @@ var (
 	MarshalFailed   Exception = 6001
 
 	redisPublishFailed Exception = 7000
-	redisSetFailed     Exception = 7001
+	SetCacheFailed     Exception = 7001
+	GetCacheFailed     Exception = 7002
 )
 
 func (m Exception) Error() error {
@@ -37,8 +38,10 @@ func (m Exception) String() string {
 		str = fmt.Sprintf("编码失败")
 	case redisPublishFailed:
 		str = fmt.Sprintf("使用Redis发布消息失败")
-	case redisSetFailed:
+	case SetCacheFailed:
 		str = fmt.Sprintf("设置Redis缓存失败")
+	case GetCacheFailed:
+		str = fmt.Sprintf("获取Redis缓存失败")
 	default:
 		str = fmt.Sprintf("未知的错误类型")
 	}
