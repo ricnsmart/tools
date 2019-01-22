@@ -46,13 +46,13 @@ func (e Exception) String() string {
 	case MarshalFailed:
 		str = "编码失败"
 	case RedisPublishFailed:
-		str = "使用Redis发布消息失败"
+		str = "向Redis发布消息失败"
 	case SetCacheFailed:
 		str = "设置Redis缓存失败"
 	case GetCacheFailed:
 		str = "获取Redis缓存失败"
 	case MQPublishFailed:
-		str = "使用RabbitMQ发布消息失败"
+		str = "向RabbitMQ投递消息失败"
 	default:
 		str = "未知的错误类型"
 	}

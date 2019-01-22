@@ -35,6 +35,7 @@ func Publish(key string, i interface{}) error {
 	bytes, err := json.Marshal(i)
 
 	if err != nil {
+		util.LogOnError(util.MarshalFailed.String(), err, i)
 		return err
 	}
 
@@ -47,6 +48,7 @@ func Set(key string, i interface{}, expiration time.Duration) error {
 	bytes, err := json.Marshal(i)
 
 	if err != nil {
+		util.LogOnError(util.MarshalFailed.String(), err, i)
 		return err
 	}
 
