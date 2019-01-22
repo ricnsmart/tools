@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type Exception uint16
+type Exception int
 
 var (
 	Success Exception = 2000
