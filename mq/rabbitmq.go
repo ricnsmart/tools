@@ -442,6 +442,122 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, error) {
 	return msgs, err
 }
 
+// TOPIC模式
+func TopicEmit(exchangeName, key string, request []byte) error {
+	ch, err := conn.Channel()
+
+	if err != nil {
+		log.Error(openChannelFailed)
+		return err
+	}
+
+	defer ch.Close()
+
+	err = ch.ExchangeDeclare(
+		exchangeName,
+		"topic",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	if err != nil {
+		log.Error(declareExchangeFailed)
+		return err
+	}
+
+	err = ch.Publish(
+		exchangeName,
+		key,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        request,
+		})
+
+	if err != nil {
+		log.Error(publishMessageFailed)
+	}
+
+	return nil
+}
+
+// keys 绑定多个路由
+// key支持以下规则
+// *（星号）：可以（只能）匹配一个单词
+// #（井号）：可以匹配多个单词（或者零个）
+func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, error) {
+	ch, err := conn.Channel()
+
+	if err != nil {
+		log.Error(openChannelFailed)
+		return nil, err
+	}
+
+	err = ch.ExchangeDeclare(
+		exchangeName,
+		"topic",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	if err != nil {
+		log.Error(declareExchangeFailed)
+		return nil, err
+	}
+
+	q, err := ch.QueueDeclare(
+		"",
+		false,
+		true,
+		true,
+		false,
+		nil,
+	)
+
+	if err != nil {
+		log.Error(declareQueueFailed)
+		return nil, err
+	}
+
+	for _, key := range keys {
+		err = ch.QueueBind(
+			q.Name,
+			key,
+			exchangeName,
+			false,
+			nil)
+
+		if err != nil {
+			log.Error(bindQueueFailed)
+			return nil, err
+		}
+	}
+
+	msgs, err := ch.Consume(
+		q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	if err != nil {
+		log.Error(registerConsumerFailed)
+		return nil, err
+	}
+
+	return msgs, err
+}
+
 // RPC模式
 func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 	ch, err := conn.Channel()

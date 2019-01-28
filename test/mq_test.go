@@ -5,7 +5,6 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/tools/mq"
 	"testing"
-	"time"
 )
 
 type alarm struct {
@@ -23,16 +22,11 @@ func TestAlarm(t *testing.T) {
 
 	var alarm alarm
 
-	result, ch, err := mq.Subscribe("pmc350f/alarm")
+	result, err := mq.Subscribe("pmc350f/alarm")
 
 	if err != nil {
 		log.Print(err)
 	}
-
-	go func() {
-		time.Sleep(5 * time.Second)
-		ch.Close()
-	}()
 
 	for ch := range result {
 		err = json.Unmarshal(ch.Body, &alarm)
@@ -43,5 +37,30 @@ func TestAlarm(t *testing.T) {
 		}
 
 		log.Info(alarm)
+	}
+}
+
+func TestTopicEmit(t *testing.T) {
+	mq.Connect("ricn", "ricnsmart2018", "localhost:5672")
+
+	err := mq.TopicEmit(`system_notification`, `1975b244-f1b5-4371-b03c-9bba6ee25b4b`, []byte{3})
+
+	if err != nil {
+		log.Error(err)
+	}
+}
+
+func TestTopicReceive(t *testing.T) {
+	mq.Connect("ricn", "ricnsmart2018", "localhost:5672")
+
+	ch, err := mq.TopicReceive(`system_notification`, `*`, `ee7b760d-8068-4697-8b37-ddb625650b91`, `1975b244-f1b5-4371-b03c-9bba6ee25b4b`)
+
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	for msg := range ch {
+		log.Info(msg.Body)
 	}
 }
