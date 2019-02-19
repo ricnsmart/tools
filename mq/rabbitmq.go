@@ -401,7 +401,7 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, error) {
 	q, err := ch.QueueDeclare(
 		"",
 		false,
-		true,
+		false,
 		true,
 		false,
 		nil,
