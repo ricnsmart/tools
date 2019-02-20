@@ -53,6 +53,9 @@ var (
 	RegisterDeviceFailed        Exception = 9013
 	GetDeviceSecretFailed       Exception = 9014
 	SendCaptchaFailed           Exception = 9020
+
+	// 通用
+	UnknownType Exception = 10000
 )
 
 func (e Exception) Error() error {
@@ -119,6 +122,8 @@ func (e Exception) String() string {
 		str = "获取设备密钥失败"
 	case SendCaptchaFailed:
 		str = "发送验证码失败"
+	case UnknownType:
+		str = "未知的类型"
 	default:
 		str = "未知的错误类型"
 	}
@@ -184,6 +189,8 @@ func (e Exception) Name() string {
 		str = "GetDeviceSecretFailed"
 	case SendCaptchaFailed:
 		str = "SendCaptchaFailed"
+	case UnknownType:
+		str = "UnknownType"
 	default:
 		str = "UnknownReason"
 	}
