@@ -5,6 +5,7 @@ import (
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/tools/util"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -118,16 +119,22 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 	return slc, nil
 }
 
-// 防止float类型 0，1等存成int类型
-func SolveFloatInt(fields map[string]interface{}) {
+// 解决influx对float和uint64支持不良的问题
+func FixInfluxType(fields map[string]interface{}) {
 	for key, value := range fields {
 		switch value.(type) {
 		case float64:
-			// 将可能为正整数的float值全部+0.00001
+			i := value.(float64)
+			// 将正整数形式的float值全部+0.00001
 			// 因为influxDB认为字面量4就是整数，而不是浮点数；而go中不是这样，字面量4可能是浮点数
-			fields[key] = value.(float64) + 0.00001
+			if math.Ceil(i) == i {
+				fields[key] = i + 0.00001
+			}
 		case float32:
-			fields[key] = value.(float32) + 0.00001
+			i := value.(float32)
+			if math.Ceil(float64(i)) == float64(i) {
+				fields[key] = i + 0.00001
+			}
 			// influx不支持uint64
 		case uint64:
 			fields[key] = strconv.FormatUint(value.(uint64), 10)
