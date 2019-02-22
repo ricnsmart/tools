@@ -121,7 +121,7 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 
 // 解决influx对float和uint64支持不良的问题
 // @param limit 误差范围
-func FixInfluxType(fields map[string]interface{}, limit int) {
+func FixInfluxType(fields map[string]interface{}, limit float32) {
 	for key, value := range fields {
 		switch value.(type) {
 		case float64:
@@ -134,7 +134,7 @@ func FixInfluxType(fields map[string]interface{}, limit int) {
 		case float32:
 			i := value.(float32)
 			if math.Ceil(float64(i)) == float64(i) {
-				fields[key] = i + float32(limit)
+				fields[key] = i + limit
 			}
 			// influx不支持uint64
 		case uint64:
