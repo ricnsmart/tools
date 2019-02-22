@@ -120,7 +120,8 @@ func Query(cmd string) ([]map[string]interface{}, error) {
 }
 
 // 解决influx对float和uint64支持不良的问题
-func FixInfluxType(fields map[string]interface{}) {
+// @param limit 误差范围
+func FixInfluxType(fields map[string]interface{}, limit int) {
 	for key, value := range fields {
 		switch value.(type) {
 		case float64:
@@ -128,12 +129,12 @@ func FixInfluxType(fields map[string]interface{}) {
 			// 将正整数形式的float值全部+0.00001
 			// 因为influxDB认为字面量4就是整数，而不是浮点数；而go中不是这样，字面量4可能是浮点数
 			if math.Ceil(i) == i {
-				fields[key] = i + 0.00001
+				fields[key] = i + float64(limit)
 			}
 		case float32:
 			i := value.(float32)
 			if math.Ceil(float64(i)) == float64(i) {
-				fields[key] = i + 0.00001
+				fields[key] = i + float32(limit)
 			}
 			// influx不支持uint64
 		case uint64:
