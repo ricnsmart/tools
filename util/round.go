@@ -17,3 +17,15 @@ func BankerRounding(num interface{}, accuracy int) (f float64) {
 
 	return
 }
+
+// 将map中的float值进行舍入
+func MapRound(m map[string]interface{}, accuracy int) {
+	for key, value := range m {
+		switch value.(type) {
+		case float64:
+			m[key] = BankerRounding(value.(float64), accuracy)
+		case float32:
+			m[key] = float32(BankerRounding(value.(float32), accuracy))
+		}
+	}
+}

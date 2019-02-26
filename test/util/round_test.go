@@ -7,6 +7,6 @@ import (
 )
 
 func TestBankerRounding(t *testing.T) {
-	result := util.BankerRounding(1.3322, 2)
+	result := util.BankerRounding(0.0000001, 2)
 	fmt.Print(result)
 }

@@ -41,6 +41,10 @@ func Publish(key string, i interface{}) error {
 
 	err = RedisDB.Publish(key, bytes).Err()
 
+	if err != nil {
+		util.LogOnError(util.RedisPublishFailed.String(), err, i)
+	}
+
 	return err
 }
 
@@ -53,6 +57,10 @@ func Set(key string, i interface{}, expiration time.Duration) error {
 	}
 
 	err = RedisDB.Set(key, bytes, expiration).Err()
+
+	if err != nil {
+		util.LogOnError(util.SetCacheFailed.String(), err, i)
+	}
 
 	return err
 }

@@ -1,6 +1,10 @@
 package util
 
-import "bytes"
+import (
+	"bytes"
+	"encoding/binary"
+	"math"
+)
 
 // 去除[]byte中的0
 // 适用于提取ascII码
