@@ -2,8 +2,6 @@ package util
 
 import (
 	"bytes"
-	"encoding/binary"
-	"math"
 )
 
 // 去除[]byte中的0
