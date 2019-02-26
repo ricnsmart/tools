@@ -30,7 +30,8 @@ var (
 	RedisSubscribeFailed Exception = 7002
 	SetCacheFailed       Exception = 7003
 	GetCacheFailed       Exception = 7004
-	MQPublishFailed      Exception = 7005
+
+	MQPublishFailed Exception = 7005
 
 	//文件表格操作类
 	CreateXLSXFailed Exception = 8000
@@ -47,12 +48,17 @@ var (
 	UpdateDomainRecordFailed    Exception = 9002
 	CheckDomainRecordFailed     Exception = 9003
 	SetDomainRecordStatusFailed Exception = 9004
-	EnableThingFailed           Exception = 9010
-	DisableThingFailed          Exception = 9011
-	CheckDeviceNameFailed       Exception = 9012
-	RegisterDeviceFailed        Exception = 9013
-	GetDeviceSecretFailed       Exception = 9014
-	SendCaptchaFailed           Exception = 9020
+
+	EnableThingFailed     Exception = 9010
+	DisableThingFailed    Exception = 9011
+	CheckDeviceNameFailed Exception = 9012
+	RegisterDeviceFailed  Exception = 9013
+	GetDeviceSecretFailed Exception = 9014
+	SendCaptchaFailed     Exception = 9020
+
+	// influx
+	WriteInfluxFailed Exception = 9030
+	QueryInfluxFailed Exception = 9031
 
 	// 通用
 	UnknownType Exception = 10000
@@ -122,6 +128,10 @@ func (e Exception) String() string {
 		str = "获取设备密钥失败"
 	case SendCaptchaFailed:
 		str = "发送验证码失败"
+	case WriteInfluxFailed:
+		str = "写入Influx失败"
+	case QueryInfluxFailed:
+		str = "查询Influx失败"
 	case UnknownType:
 		str = "未知的类型"
 	default:
@@ -189,6 +199,10 @@ func (e Exception) Name() string {
 		str = "GetDeviceSecretFailed"
 	case SendCaptchaFailed:
 		str = "SendCaptchaFailed"
+	case WriteInfluxFailed:
+		str = "WriteInfluxFailed"
+	case QueryInfluxFailed:
+		str = "QueryInfluxFailed"
 	case UnknownType:
 		str = "UnknownType"
 	default:
