@@ -67,9 +67,8 @@ func Set(key string, i interface{}, expiration time.Duration) error {
 	return err
 }
 
-// 用集合存储结构体或者Map
-func SAdd(key string, i interface{}) error {
-
+// 用hash表存储结构体或Map
+func HSet(key, field string, i interface{}) error {
 	bytes, err := json.Marshal(i)
 
 	if err != nil {
@@ -77,11 +76,11 @@ func SAdd(key string, i interface{}) error {
 		return err
 	}
 
-	err = RedisDB.SAdd(key, bytes).Err()
+	err = RedisDB.HSet(key, field, bytes).Err()
 
 	if err != nil {
 		util.LogOnError(util.SetCacheFailed.String(), err, i)
 	}
 
-	return nil
+	return err
 }
