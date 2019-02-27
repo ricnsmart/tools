@@ -30,6 +30,7 @@ func Connect(address, password string) {
 	log.Info(connectRedisSucceed)
 }
 
+// 广播结构体或者Map
 func Publish(key string, i interface{}) error {
 
 	bytes, err := json.Marshal(i)
@@ -48,6 +49,7 @@ func Publish(key string, i interface{}) error {
 	return err
 }
 
+// 缓存结构体或者Map
 func Set(key string, i interface{}, expiration time.Duration) error {
 	bytes, err := json.Marshal(i)
 
@@ -63,4 +65,23 @@ func Set(key string, i interface{}, expiration time.Duration) error {
 	}
 
 	return err
+}
+
+// 用集合存储结构体或者Map
+func SAdd(key string, i interface{}) error {
+
+	bytes, err := json.Marshal(i)
+
+	if err != nil {
+		util.LogOnError(util.MarshalFailed.String(), err, i)
+		return err
+	}
+
+	err = RedisDB.SAdd(key, bytes).Err()
+
+	if err != nil {
+		util.LogOnError(util.SetCacheFailed.String(), err, i)
+	}
+
+	return nil
 }
