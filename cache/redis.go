@@ -76,7 +76,7 @@ func HSet(key, field string, i interface{}) error {
 		return err
 	}
 
-	err = RedisDB.HSet(key, field, bytes).Err()
+	err = RedisDB.HSet(key, field, string(bytes)).Err()
 
 	if err != nil {
 		util.LogOnError(util.SetCacheFailed.String(), err, i)
