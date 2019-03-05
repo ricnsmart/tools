@@ -22,11 +22,6 @@ const (
 	connectInfluxDBSucceed = "Success to connect to InfluxDB"
 )
 
-type Or struct {
-	Body string
-	Keys []string
-}
-
 // 除了需要指定连接的用户名、密码、地址，还需要指定db
 func Connect(address, userName, password, dbName string) {
 
@@ -143,19 +138,9 @@ func FixInfluxType(fields map[string]interface{}, limit float32) {
 	}
 }
 
-func Joint(body, table, option string, or *Or, andQuery []string) (cmd string) {
+func Select(body, table, option string, andQuery []string) (cmd string) {
 
-	cmd = fmt.Sprintf(`%v from "%v"`, body, table)
-
-	if or != nil && len(or.Keys) > 0 {
-		var tmp []string
-
-		for _, key := range or.Keys {
-			tmp = append(tmp, fmt.Sprintf(or.Body, key))
-		}
-
-		andQuery = append(andQuery, fmt.Sprintf(`(%v)`, strings.Join(tmp, " OR ")))
-	}
+	cmd = fmt.Sprintf(`select %v from "%v"`, body, table)
 
 	if len(andQuery) > 0 {
 		cmd = fmt.Sprintf(`%v where %v`, cmd, strings.Join(andQuery, " AND "))
