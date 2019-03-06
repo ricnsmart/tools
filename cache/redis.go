@@ -36,14 +36,14 @@ func Publish(key string, i interface{}) error {
 	bytes, err := json.Marshal(i)
 
 	if err != nil {
-		util.LogOnError(util.MarshalFailed.String(), err, i)
+		log.Error(util.MarshalFailed.String(), i, err)
 		return err
 	}
 
 	err = RedisDB.Publish(key, bytes).Err()
 
 	if err != nil {
-		util.LogOnError(util.RedisPublishFailed.String(), err, i)
+		log.Error(util.RedisPublishFailed.String(), i, err)
 	}
 
 	return err
@@ -54,14 +54,14 @@ func Set(key string, i interface{}, expiration time.Duration) error {
 	bytes, err := json.Marshal(i)
 
 	if err != nil {
-		util.LogOnError(util.MarshalFailed.String(), err, i)
+		log.Error(util.MarshalFailed.String(), i, err)
 		return err
 	}
 
 	err = RedisDB.Set(key, bytes, expiration).Err()
 
 	if err != nil {
-		util.LogOnError(util.SetCacheFailed.String(), err, i)
+		log.Error(util.SetCacheFailed.String(), i, err)
 	}
 
 	return err
@@ -72,14 +72,14 @@ func HSet(key, field string, i interface{}) error {
 	bytes, err := json.Marshal(i)
 
 	if err != nil {
-		util.LogOnError(util.MarshalFailed.String(), err, i)
+		log.Error(util.MarshalFailed.String(), i, err)
 		return err
 	}
 
 	err = RedisDB.HSet(key, field, string(bytes)).Err()
 
 	if err != nil {
-		util.LogOnError(util.SetCacheFailed.String(), err, i)
+		log.Error(util.SetCacheFailed.String(), i, err)
 	}
 
 	return err
