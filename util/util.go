@@ -7,7 +7,3 @@ func FatalOnError(err error, msg string, data ...interface{}) {
 		log.Fatalf("%s: %s ; data: %v", msg, err, data)
 	}
 }
-
-func LogOnError(code string, err error, data ...interface{}) {
-	log.Errorf("%s: %s ;data: %v", code, err, data)
-}
