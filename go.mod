@@ -10,6 +10,7 @@ require (
 	github.com/labstack/gommon v0.2.7
 	github.com/onsi/ginkgo v1.6.0 // indirect
 	github.com/onsi/gomega v1.4.1 // indirect
+	github.com/ricnsmart/rules v0.0.10
 	github.com/satori/go.uuid v1.2.0
 	github.com/streadway/amqp v0.0.0-20181205114330-a314942b2fd9
 	github.com/tidwall/pretty v0.0.0-20180105212114-65a9db5fad51 // indirect
