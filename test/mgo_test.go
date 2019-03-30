@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/rules"
 	"github.com/ricnsmart/tools/mgo"
@@ -45,6 +46,80 @@ func TestDecode(t *testing.T) {
 	log.Print(deviceMetric)
 	log.Print(b.String())
 
+}
+
+func TestOR(t *testing.T) {
+	mgo.Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
+
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+
+	a := bson.A{}
+
+	a = append(a, bson.M{"deviceid": "1354b470-7733-4194-b406-f9a5999d8d57"}, bson.M{"deviceid": "aabb6480-6412-485a-9397-7277f110704d"})
+
+	filter := bson.D{
+		{"$or", a},
+	}
+
+	//filter := bson.M{"deviceid": "1354b470-7733-4194-b406-f9a5999d8d57"}
+
+	//b, err := mgo.MongoDB.Collection(rules.DevicesCollection).FindOne(ctx, filter).DecodeBytes()
+	//
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//log.Print(b.String())
+
+	//
+	cur, err := mgo.MongoDB.Collection(rules.DevicesCollection).Find(ctx, filter)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var deviceMetrics []DeviceMetric
+	// Finding multiple documents returns a cursor
+	// Iterating through the cursor allows us to decode documents one at a time
+	for cur.Next(context.TODO()) {
+
+		// create a value into which the single document can be decoded
+		var deviceMetric DeviceMetric
+		err := cur.Decode(&deviceMetric)
+		if err != nil {
+			log.Fatal(err)
+		}
+		deviceMetrics = append(deviceMetrics, deviceMetric)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Close the cursor once finished
+	cur.Close(context.TODO())
+
+	fmt.Printf("Found multiple documents (array of pointers): %+v\n", deviceMetrics)
+
+}
+
+func TestDelete(t *testing.T) {
+	mgo.Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
+
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	arr := bson.A{}
+
+	for _, deviceID := range []string{"1354b470-7733-4194-b406-f9a5999d8d57", "aabb6480-6412-485a-9397-7277f110704d"} {
+		arr = append(arr, bson.M{"deviceid": deviceID})
+	}
+
+	filter := bson.D{{"$or", arr}}
+
+	_, err := mgo.MongoDB.Collection(rules.DevicesCollection).DeleteMany(ctx, filter)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 type DeviceMetric struct {

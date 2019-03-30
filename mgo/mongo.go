@@ -22,11 +22,11 @@ func Connect(address, dbName string) {
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(address))
 
-	util.FatalOnError(err, connectMongoFailed)
+	util.FatalOnError(err, connectMongoFailed, address, dbName)
 
 	err = client.Ping(ctx, readpref.Primary())
 
-	util.FatalOnError(err, connectMongoFailed)
+	util.FatalOnError(err, connectMongoFailed, address, dbName)
 
 	MongoDB = client.Database(dbName)
 
