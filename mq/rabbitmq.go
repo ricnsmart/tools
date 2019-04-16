@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var conn *amqp.Connection
+var Conn *amqp.Connection
 
 const (
 	connectRabbitMQFailed  = "Failed to connect to RabbitMQ"
@@ -29,7 +29,7 @@ func Connect(userName, password, address string) {
 
 	url := fmt.Sprintf("amqp://%v:%v@%v/", userName, password, address)
 
-	conn, err = amqp.Dial(url)
+	Conn, err = amqp.Dial(url)
 
 	util.FatalOnError(err, connectRabbitMQFailed, url)
 
@@ -39,7 +39,7 @@ func Connect(userName, password, address string) {
 // 普通模式
 // 支持持久化
 func Send(QueueName string, request []byte) error {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -81,7 +81,7 @@ func Send(QueueName string, request []byte) error {
 }
 
 func Receive(QueueName string) (<-chan amqp.Delivery, error) {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -122,7 +122,7 @@ func Receive(QueueName string) (<-chan amqp.Delivery, error) {
 
 // worker模式
 func Producer(queueName string, request []byte) error {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -166,7 +166,7 @@ func Producer(queueName string, request []byte) error {
 
 // worker使用时，必须手动ack
 func Worker(queueName string) (<-chan amqp.Delivery, error) {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -221,7 +221,7 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 // fanout，广播模式
 // 开启持久化
 func Publish(exchangeName string, request []byte) error {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -265,7 +265,7 @@ func Publish(exchangeName string, request []byte) error {
 }
 
 func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -334,7 +334,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 // 路由模式
 // 关闭持久化
 func RoutePublish(exchangeName, key string, request []byte) error {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -375,15 +375,9 @@ func RoutePublish(exchangeName, key string, request []byte) error {
 	return nil
 }
 
-func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, error) {
-	ch, err := conn.Channel()
-
-	if err != nil {
-		log.Error(openChannelFailed)
-		return nil, err
-	}
-
-	err = ch.ExchangeDeclare(
+// 一个线程用一个channel，多个go程共用一个channel
+func RouteConsume(ch *amqp.Channel, exchangeName, key string) (<-chan amqp.Delivery, error) {
+	err := ch.ExchangeDeclare(
 		exchangeName,
 		"direct",
 		true,
@@ -444,7 +438,7 @@ func RouteConsume(exchangeName, key string) (<-chan amqp.Delivery, error) {
 
 // TOPIC模式
 func TopicEmit(exchangeName, key string, request []byte) error {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -490,7 +484,7 @@ func TopicEmit(exchangeName, key string, request []byte) error {
 // *（星号）：可以（只能）匹配一个单词
 // #（井号）：可以匹配多个单词（或者零个）
 func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, error) {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -560,7 +554,7 @@ func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, er
 
 // RPC模式
 func RPCClient(queueName string, request []byte) (reply []byte, err error) {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	if err != nil {
 		log.Error(openChannelFailed)
@@ -630,7 +624,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 }
 
 func RPCServer(queueName string, f func([]byte) []byte) {
-	ch, err := conn.Channel()
+	ch, err := Conn.Channel()
 
 	util.FatalOnError(err, openChannelFailed)
 
