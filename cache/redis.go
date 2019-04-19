@@ -12,7 +12,7 @@ var RedisDB *redis.Client
 
 const (
 	connectRedisFailed  = "Failed to connect to Redis"
-	connectRedisSucceed = "Success to connect to Redis"
+	connectRedisSucceed = "Redis connected!"
 )
 
 func Connect(address, password string) {
@@ -27,7 +27,7 @@ func Connect(address, password string) {
 
 	util.FatalOnError(err, connectRedisFailed, pong)
 
-	log.Info(connectRedisSucceed, " Address：", address)
+	log.Info(connectRedisSucceed, " Address:", address)
 }
 
 // 广播结构体或者Map

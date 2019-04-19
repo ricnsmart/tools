@@ -16,7 +16,7 @@ var (
 
 const (
 	connectIotFailed  = "Failed to connect to Iot"
-	connectIotSucceed = "Success to connect to Iot"
+	connectIotSucceed = "Iot connected!"
 )
 
 func Connect(host, address string) {
@@ -29,7 +29,7 @@ func Connect(host, address string) {
 
 	util.FatalOnError(err, connectIotFailed)
 
-	log.Info(connectIotSucceed, " Address:", address, " Host:", host)
+	log.Info(connectIotSucceed, " Address:", address)
 }
 
 func BatchCheckDeviceNames(request *BatchDeviceInfo) (*BatchRegisterReply, error) {

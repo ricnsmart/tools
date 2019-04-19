@@ -16,7 +16,7 @@ var (
 
 const (
 	connectDnsFailed  = "Failed to connect to Dns"
-	connectDnsSucceed = "Success to connect to Dns"
+	connectDnsSucceed = "Dns connected!"
 )
 
 func Connect(host, address string) {
@@ -29,7 +29,7 @@ func Connect(host, address string) {
 
 	util.FatalOnError(err, connectDnsFailed)
 
-	log.Info(connectDnsSucceed, " Address:", address, " Host:", host)
+	log.Info(connectDnsSucceed, " Address:", address)
 }
 
 func CheckDomainRecord(request *DomainRecord) (*CheckReply, error) {

@@ -21,7 +21,7 @@ const (
 	registerConsumerFailed = "Failed to register a consumer"
 	publishMessageFailed   = "Failed to publish a message"
 	setQoSFailed           = "Failed to set Qos"
-	connectRabbitMQSucceed = "Success to connect to RabbitMQ"
+	connectRabbitMQSucceed = "RabbitMQ connected!"
 )
 
 func Connect(userName, password, address string) {

@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	connectMongoFailed  = "Failed to connect to Mongo"
-	connectMongoSucceed = "Success to connect to Mongo"
+	connectMongoDBFailed  = "Failed to connect to MongoDB"
+	connectMongoDBSucceed = "MongoDB connected!"
 )
 
 var MongoDB *mongo.Database
@@ -22,13 +22,13 @@ func Connect(address, dbName string) {
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(address))
 
-	util.FatalOnError(err, connectMongoFailed, address, dbName)
+	util.FatalOnError(err, connectMongoDBFailed, address, dbName)
 
 	err = client.Ping(ctx, readpref.Primary())
 
-	util.FatalOnError(err, connectMongoFailed, address, dbName)
+	util.FatalOnError(err, connectMongoDBFailed, address, dbName)
 
 	MongoDB = client.Database(dbName)
 
-	log.Info(connectMongoSucceed, " Address:", address, " DB:", dbName)
+	log.Info(connectMongoDBSucceed, " Address:", address, " DB:", dbName)
 }

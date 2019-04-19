@@ -16,7 +16,7 @@ var (
 
 const (
 	connectSmsFailed  = "Failed to connect to Sms"
-	connectSmsSucceed = "Success to connect to Sms"
+	connectSmsSucceed = "SMS connected"
 )
 
 func Connect(host, address string) {
@@ -29,7 +29,7 @@ func Connect(host, address string) {
 
 	util.FatalOnError(err, connectSmsFailed)
 
-	log.Info(connectSmsSucceed, " Host:", host, " Address:", address)
+	log.Info(connectSmsSucceed, " Address:", address)
 }
 
 func SendSMS(PhoneNumbers, TemplateCode string, TemplateParam string) (err error) {

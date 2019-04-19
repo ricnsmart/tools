@@ -19,7 +19,7 @@ var (
 const (
 	connectInfluxDBFailed  = "Failed to connect to InfluxDB"
 	testInfluxDBFailed     = "Failed to test connect InfluxDB"
-	connectInfluxDBSucceed = "Success to connect to InfluxDB"
+	connectInfluxDBSucceed = "InfluxDB connected!"
 )
 
 // 除了需要指定连接的用户名、密码、地址，还需要指定db
