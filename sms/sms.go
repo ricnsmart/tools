@@ -29,7 +29,7 @@ func Connect(host, address string) {
 
 	util.FatalOnError(err, connectSmsFailed)
 
-	log.Info(connectSmsSucceed)
+	log.Info(connectSmsSucceed, " Host:", host, " Address:", address)
 }
 
 func SendSMS(PhoneNumbers, TemplateCode string, TemplateParam string) (err error) {

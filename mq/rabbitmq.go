@@ -33,7 +33,7 @@ func Connect(userName, password, address string) {
 
 	util.FatalOnError(err, connectRabbitMQFailed, url)
 
-	log.Info(connectRabbitMQSucceed)
+	log.Info(connectRabbitMQSucceed, " Address:", address)
 }
 
 // 普通模式

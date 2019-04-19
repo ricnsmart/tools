@@ -41,7 +41,7 @@ func Connect(address, userName, password, dbName string) {
 
 	db = dbName
 
-	log.Info(connectInfluxDBSucceed)
+	log.Info(connectInfluxDBSucceed, " Address:", address, " DB:", dbName)
 }
 
 func Write(measurement string, tags map[string]string, fields map[string]interface{}) (err error) {

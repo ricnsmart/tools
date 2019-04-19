@@ -27,7 +27,7 @@ func Connect(address, password string) {
 
 	util.FatalOnError(err, connectRedisFailed, pong)
 
-	log.Info(connectRedisSucceed)
+	log.Info(connectRedisSucceed, " Address：", address)
 }
 
 // 广播结构体或者Map

@@ -29,7 +29,7 @@ func Connect(host, address string) {
 
 	util.FatalOnError(err, connectIotFailed)
 
-	log.Info(connectIotSucceed)
+	log.Info(connectIotSucceed, " Address:", address, " Host:", host)
 }
 
 func BatchCheckDeviceNames(request *BatchDeviceInfo) (*BatchRegisterReply, error) {

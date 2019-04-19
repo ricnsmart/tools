@@ -30,5 +30,5 @@ func Connect(address, dbName string) {
 
 	MongoDB = client.Database(dbName)
 
-	log.Info(connectMongoSucceed)
+	log.Info(connectMongoSucceed, " Address:", address, " DB:", dbName)
 }

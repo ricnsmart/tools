@@ -29,7 +29,7 @@ func Connect(host, address string) {
 
 	util.FatalOnError(err, connectDnsFailed)
 
-	log.Info(connectDnsSucceed)
+	log.Info(connectDnsSucceed, " Address:", address, " Host:", host)
 }
 
 func CheckDomainRecord(request *DomainRecord) (*CheckReply, error) {
