@@ -16,7 +16,7 @@ var (
 
 const (
 	connectSmsFailed  = "Failed to connect to Sms"
-	connectSmsSucceed = "SMS connected"
+	connectSmsSucceed = "SMS connected!"
 )
 
 func Connect(host, address string) {
