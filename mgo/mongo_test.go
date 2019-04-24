@@ -40,7 +40,7 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestDecode(t *testing.T) {
-	var deviceMetric DeviceMetric
+	var deviceMetric RCN350F
 
 	Connect("localhost:27017", "ricnsmart_dev")
 
@@ -90,13 +90,13 @@ func TestOR(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	var deviceMetrics []DeviceMetric
+	var deviceMetrics []RCN350F
 	// Finding multiple documents returns a cursor
 	// Iterating through the cursor allows us to decode documents one at a time
 	for cur.Next(context.TODO()) {
 
 		// create a value into which the single document can be decoded
-		var deviceMetric DeviceMetric
+		var deviceMetric RCN350F
 		err := cur.Decode(&deviceMetric)
 		if err != nil {
 			log.Fatal(err)
@@ -134,13 +134,22 @@ func TestDelete(t *testing.T) {
 	}
 }
 
-type DeviceMetric struct {
+type RCN350F struct {
+	CreateAt     string
+	UpdateAt     string
+	DeviceID     string
 	GPRSOperator int
 	DomainRecord string
 	CT           int
 	Interval     int
 	SMSLimit     int
-	Metrics      struct {
+
+	//  rcn350f特有
+	Buzzer     byte // 蜂鸣器开关
+	BreakShort byte
+	ICCID      string
+
+	Metrics struct {
 		DO1 struct {
 			AlertSwitch bool
 			SMSSwitch   bool
@@ -164,8 +173,8 @@ type DeviceMetric struct {
 			Min         int
 			Max         int
 			Scale       int
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 			SPL         int
 		}
 		Ib struct {
@@ -175,8 +184,8 @@ type DeviceMetric struct {
 			Min         int
 			Max         int
 			Scale       int
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 			SPL         int
 		}
 		Ic struct {
@@ -186,16 +195,16 @@ type DeviceMetric struct {
 			Min         int
 			Max         int
 			Scale       int
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 			SPL         int
 		}
 		IR struct {
 			WarnSwitch  bool
 			AlertSwitch bool
 			SMSSwitch   bool
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 			SPL         int
 		}
 		T1 struct {
@@ -205,8 +214,8 @@ type DeviceMetric struct {
 			Min         int
 			Max         int
 			Scale       int
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 		}
 		T2 struct {
 			WarnSwitch  bool
@@ -215,8 +224,8 @@ type DeviceMetric struct {
 			Min         int
 			Max         int
 			Scale       int
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 		}
 		T3 struct {
 			WarnSwitch  bool
@@ -225,45 +234,48 @@ type DeviceMetric struct {
 			Min         int
 			Max         int
 			Scale       int
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 		}
 		T4 struct {
 			WarnSwitch  bool
 			AlertSwitch bool
 			SMSSwitch   bool
-			Warn        int
-			Alert       int
+			Warn        float32
+			Alert       float32
 		}
 		Ua struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        int
-			Alert       int
+			WarnSwitch    bool
+			AlertSwitch   bool
+			SMSSwitch     bool
+			WarnSMSSwitch bool
+			Min           int
+			Max           int
+			Scale         int
+			Warn          float32
+			Alert         float32
 		}
 		Ub struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        int
-			Alert       int
+			WarnSwitch    bool
+			AlertSwitch   bool
+			SMSSwitch     bool
+			WarnSMSSwitch bool
+			Min           int
+			Max           int
+			Scale         int
+			Warn          float32
+			Alert         float32
 		}
 		Uc struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        int
-			Alert       int
+			WarnSwitch    bool
+			AlertSwitch   bool
+			SMSSwitch     bool
+			WarnSMSSwitch bool
+			Min           int
+			Max           int
+			Scale         int
+			Warn          float32
+			Alert         float32
 		}
 	}
 }
@@ -301,15 +313,19 @@ func TestMigration(t *testing.T) {
 func TestFind(t *testing.T) {
 	Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
 
-	var result = struct {
-		CT float64
-	}{}
+	//var result = struct {
+	//	CT float64
+	//}{}
 
-	err := MongoDB.Collection(rules.DevicesCollection).FindOne(context.Background(), bson.D{{"deviceid", "77003cdf-3dbe-4b81-b3a6-b5347e20545d"}}).Decode(&result)
+	var d RCN350F
+
+	err := MongoDB.Collection(rules.DevicesCollection).FindOne(context.Background(), bson.D{{"deviceid", "493be9e5-f429-40c0-85d8-5d38a299ff93"}}).Decode(&d)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Print(result)
+	log.Infof("%+v", d)
+
+	//log.Print(result)
 }

@@ -18,3 +18,19 @@ func TestRedis(t *testing.T) {
 
 	log.Print(strNum, reflect.TypeOf(strNum))
 }
+
+func TestPipeline(t *testing.T) {
+	Connect("39.104.176.28:10032", "ricnsmart2018")
+
+	pipe := RedisDB.Pipeline()
+
+	for _, v := range []string{"1", "2"} {
+		pipe.Del(v)
+	}
+
+	_, err := pipe.Exec()
+
+	if err != nil {
+		log.Fatal("批量删除失败", err)
+	}
+}
