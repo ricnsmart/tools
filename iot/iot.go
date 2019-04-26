@@ -27,7 +27,7 @@ func Connect(host, address string) {
 
 	cred, err = credentials.NewClientTLSFromFile("config/ricnsmart.pem", host)
 
-	util.FatalOnError(err, connectIotFailed)
+	util.FatalOnError(err, connectIotFailed, " Address:", address)
 
 	log.Info(connectIotSucceed, " Address:", address)
 }

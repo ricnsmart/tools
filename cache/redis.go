@@ -23,9 +23,9 @@ func Connect(address, password string) {
 		DB:       0, // use default DB
 	})
 
-	pong, err := RedisDB.Ping().Result()
+	_, err := RedisDB.Ping().Result()
 
-	util.FatalOnError(err, connectRedisFailed, pong)
+	util.FatalOnError(err, connectRedisFailed, " Address:", address)
 
 	log.Info(connectRedisSucceed, " Address:", address)
 }
