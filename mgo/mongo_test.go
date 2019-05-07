@@ -2,6 +2,7 @@ package mgo
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/rules"
@@ -9,6 +10,20 @@ import (
 	"testing"
 	"time"
 )
+
+/*
+查找：
+根据ObjectID查找，需要先转换
+oid, _ := primitive.ObjectIDFromHex(string)
+
+更新：
+
+不能直接使用json，只能使用map或struct
+
+单条更新用bson.M
+多条用bson.D
+
+*/
 
 func TestUpdate(t *testing.T) {
 	//update := bson.D{{"$set",bson.A{}}}
@@ -37,6 +52,64 @@ func TestUpdate(t *testing.T) {
 		log.Fatal(err)
 	}
 
+}
+func TestUpdateJson(t *testing.T) {
+	Connect("localhost:27017", "testing")
+
+	//oid, _ := primitive.ObjectIDFromHex("5c91ae69e783718328b418f4")
+
+	//g := hex.EncodeToString([]byte("57e193d7a9cc81b4027498b5"))
+
+	//id, _ := primitive.ObjectIDFromHex(g)
+
+	//filter := bson.M{"_id": oid}
+	//filter := bsonx.Doc{{"name", bsonx.String("voson")}}
+
+	//filter := bson.M{"name": "voson"}
+
+	//var a = struct {
+	//	Sex  string
+	//	Name string
+	//}{"female", "shenjuan2"}
+
+	a := `{
+    "TimeStamp": 1514304211,
+    "Lan": "wifi",
+    "Category": "1",
+    "ControllerID": "5a1e28dbd2b7fdc76c16aaff",
+    "Version": "2.0.0",
+    "Lines": [
+        {
+            "LineNo": 1,
+            "LineID": "5a027116a3ab164c44620590",
+            "isLeakage": 0,
+            "Model": "1P_R ",
+        },
+        {
+            "LineNo": 1,
+            "LineID": "5a027116a3ab164c44620590",
+            "isLeakage": 0,
+            "Model": "1P_R ",
+        }
+    ]
+}`
+
+	//b, _ := json.Marshal(a)
+
+	m := make(map[string]interface{})
+
+	_ = json.Unmarshal([]byte(a), &m)
+
+	//update := bson.D{{"$set", m}}
+	//	//
+	//	//_, err := MongoDB.Collection("voson").UpdateOne(context.Background(), filter, update)
+	//	////err := MongoDB.Collection("voson").FindOne(context.Background(), filter).Decode(&m)
+	//	//
+	//	//if err != nil {
+	//	//	log.Fatal(err)
+	//	//}
+
+	log.Info(m)
 }
 
 func TestDecode(t *testing.T) {
