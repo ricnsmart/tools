@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/rules"
 	"go.mongodb.org/mongo-driver/bson"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -207,152 +208,6 @@ func TestDelete(t *testing.T) {
 	}
 }
 
-type RCN350F struct {
-	CreateAt     string
-	UpdateAt     string
-	DeviceID     string
-	GPRSOperator int
-	DomainRecord string
-	CT           int
-	Interval     int
-	SMSLimit     int
-
-	//  rcn350f特有
-	Buzzer     byte // 蜂鸣器开关
-	BreakShort byte
-	ICCID      string
-
-	Metrics struct {
-		DO1 struct {
-			AlertSwitch bool
-			SMSSwitch   bool
-		}
-		DO2 struct {
-			AlertSwitch bool
-			SMSSwitch   bool
-		}
-		DI1 struct {
-			AlertSwitch bool
-			SMSSwitch   bool
-		}
-		DI2 struct {
-			AlertSwitch bool
-			SMSSwitch   bool
-		}
-		Ia struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        float32
-			Alert       float32
-			SPL         int
-		}
-		Ib struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        float32
-			Alert       float32
-			SPL         int
-		}
-		Ic struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        float32
-			Alert       float32
-			SPL         int
-		}
-		IR struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Warn        float32
-			Alert       float32
-			SPL         int
-		}
-		T1 struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        float32
-			Alert       float32
-		}
-		T2 struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        float32
-			Alert       float32
-		}
-		T3 struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Min         int
-			Max         int
-			Scale       int
-			Warn        float32
-			Alert       float32
-		}
-		T4 struct {
-			WarnSwitch  bool
-			AlertSwitch bool
-			SMSSwitch   bool
-			Warn        float32
-			Alert       float32
-		}
-		Ua struct {
-			WarnSwitch    bool
-			AlertSwitch   bool
-			SMSSwitch     bool
-			WarnSMSSwitch bool
-			Min           int
-			Max           int
-			Scale         int
-			Warn          float32
-			Alert         float32
-		}
-		Ub struct {
-			WarnSwitch    bool
-			AlertSwitch   bool
-			SMSSwitch     bool
-			WarnSMSSwitch bool
-			Min           int
-			Max           int
-			Scale         int
-			Warn          float32
-			Alert         float32
-		}
-		Uc struct {
-			WarnSwitch    bool
-			AlertSwitch   bool
-			SMSSwitch     bool
-			WarnSMSSwitch bool
-			Min           int
-			Max           int
-			Scale         int
-			Warn          float32
-			Alert         float32
-		}
-	}
-}
-
 func TestMigration(t *testing.T) {
 	Connect("mongodb://39.104.158.136:27017", "ricnsmart")
 
@@ -401,4 +256,112 @@ func TestFind(t *testing.T) {
 	log.Infof("%+v", d)
 
 	//log.Print(result)
+}
+
+// 小写转大写
+func TestMigration2(t *testing.T) {
+	Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
+
+	var coll = MongoDB.Collection(rules.DevicesCollection)
+
+	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
+
+	//cur, err := coll.Find(ctx, bson.M{"DeviceID": "14834484-7525-499b-8468-887e3b865961"})
+	cur, err := coll.Find(ctx, bson.M{})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer cur.Close(ctx)
+
+	for cur.Next(ctx) {
+		var result map[string]interface{}
+		err := cur.Decode(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// do something with result....
+		//log.Info(result)
+
+		if reflect.TypeOf(result["iccid"]) != nil {
+			// rcn350f
+			var rcn350f RCN350F
+
+			b, err := json.Marshal(result)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = json.Unmarshal(b, &rcn350f)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//log.Infof("%+v", rcn350f)
+
+			_, err = coll.ReplaceOne(context.Background(), bson.M{"DeviceID": result["DeviceID"]}, rcn350f)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			continue
+		}
+
+		if reflect.TypeOf(result["alarmsound"]) != nil {
+			// pmc350f
+			var pmc350f PMC350F
+
+			b, err := json.Marshal(result)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = json.Unmarshal(b, &pmc350f)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//log.Infof("%+v", pmc350f)
+
+			_, err = coll.ReplaceOne(context.Background(), bson.M{"DeviceID": result["DeviceID"]}, pmc350f)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			continue
+		}
+
+		// pmc350
+		var pmc350 PMC350
+
+		b, err := json.Marshal(result)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = json.Unmarshal(b, &pmc350)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//log.Infof("%+v", pmc350)
+
+		_, err = coll.ReplaceOne(context.Background(), bson.M{"DeviceID": result["DeviceID"]}, pmc350)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
 }
