@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/rules"
+	"github.com/ricnsmart/tools/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"reflect"
 	"testing"
@@ -19,12 +20,31 @@ oid, _ := primitive.ObjectIDFromHex(string)
 
 更新：
 
+update bson.D{{"$set", map} 可以使用
+
 不能直接使用json，只能使用map或struct
 
 单条更新用bson.M
 多条用bson.D
 
 */
+
+func TestFindLowerCase(t *testing.T) {
+	Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
+
+	var d model.VJ
+
+	//m:= make(map[string]interface{})
+
+	err := MongoDB.Collection(rules.DevicesCollection).FindOne(context.Background(), bson.D{{"DeviceID", "fd2ca1f0-d74c-47f9-872f-89c9688dae19"}}).Decode(&d)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Infof("%+v", d)
+
+}
 
 func TestUpdate(t *testing.T) {
 	//update := bson.D{{"$set",bson.A{}}}
@@ -58,10 +78,6 @@ func TestUpdateJson(t *testing.T) {
 	Connect("localhost:27017", "testing")
 
 	//oid, _ := primitive.ObjectIDFromHex("5c91ae69e783718328b418f4")
-
-	//g := hex.EncodeToString([]byte("57e193d7a9cc81b4027498b5"))
-
-	//id, _ := primitive.ObjectIDFromHex(g)
 
 	//filter := bson.M{"_id": oid}
 	//filter := bsonx.Doc{{"name", bsonx.String("voson")}}
