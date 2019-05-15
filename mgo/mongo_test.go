@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/gommon/log"
+	"github.com/ricnsmart/plugins"
 	"github.com/ricnsmart/rules"
-	"github.com/ricnsmart/tools/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"reflect"
 	"testing"
@@ -32,7 +32,7 @@ update bson.D{{"$set", map} 可以使用
 func TestFindLowerCase(t *testing.T) {
 	Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
 
-	var d model.VJ
+	var d plugins.VJ
 
 	//m:= make(map[string]interface{})
 
@@ -130,7 +130,7 @@ func TestUpdateJson(t *testing.T) {
 }
 
 func TestDecode(t *testing.T) {
-	var deviceMetric RCN350F
+	var deviceMetric plugins.RCN350F
 
 	Connect("localhost:27017", "ricnsmart_dev")
 
@@ -180,13 +180,13 @@ func TestOR(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	var deviceMetrics []RCN350F
+	var deviceMetrics []plugins.RCN350F
 	// Finding multiple documents returns a cursor
 	// Iterating through the cursor allows us to decode documents one at a time
 	for cur.Next(context.TODO()) {
 
 		// create a value into which the single document can be decoded
-		var deviceMetric RCN350F
+		var deviceMetric plugins.RCN350F
 		err := cur.Decode(&deviceMetric)
 		if err != nil {
 			log.Fatal(err)
@@ -261,7 +261,7 @@ func TestFind(t *testing.T) {
 	//	CT float64
 	//}{}
 
-	var d RCN350F
+	var d plugins.RCN350F
 
 	err := MongoDB.Collection(rules.DevicesCollection).FindOne(context.Background(), bson.D{{"deviceid", "493be9e5-f429-40c0-85d8-5d38a299ff93"}}).Decode(&d)
 
@@ -302,7 +302,7 @@ func TestMigration2(t *testing.T) {
 
 		if reflect.TypeOf(result["iccid"]) != nil {
 			// rcn350f
-			var rcn350f RCN350F
+			var rcn350f plugins.RCN350F
 
 			b, err := json.Marshal(result)
 
@@ -329,7 +329,7 @@ func TestMigration2(t *testing.T) {
 
 		if reflect.TypeOf(result["alarmsound"]) != nil {
 			// pmc350f
-			var pmc350f PMC350F
+			var pmc350f plugins.PMC350F
 
 			b, err := json.Marshal(result)
 
@@ -355,7 +355,7 @@ func TestMigration2(t *testing.T) {
 		}
 
 		// pmc350
-		var pmc350 PMC350
+		var pmc350 plugins.PMC350
 
 		b, err := json.Marshal(result)
 

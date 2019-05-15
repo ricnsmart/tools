@@ -15,6 +15,5 @@
 *.pem
 *.key
 
-go.sum
 bin/temp
 bin/version.toml

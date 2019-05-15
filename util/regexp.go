@@ -9,4 +9,6 @@ var (
 	HasDomainRecord = regexp.MustCompile(`[0-9a-z\\.]+`)
 
 	HasNum = regexp.MustCompile(`[0-9]+`)
+
+	HasGUID = regexp.MustCompile(`[0-9a-z\-]{36}`)
 )
