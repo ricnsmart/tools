@@ -2,7 +2,6 @@ module github.com/ricnsmart/tools
 
 require (
 	github.com/go-redis/redis v6.15.0+incompatible
-	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/protobuf v1.2.0
 	github.com/hpcloud/tail v1.0.0 // indirect
 	github.com/influxdata/influxdb v1.7.0
@@ -10,15 +9,12 @@ require (
 	github.com/labstack/gommon v0.2.7
 	github.com/onsi/ginkgo v1.6.0 // indirect
 	github.com/onsi/gomega v1.4.1 // indirect
-	github.com/ricnsmart/plugins v0.0.4
+	github.com/ricnsmart/plugins v0.0.10
 	github.com/ricnsmart/rules v0.0.10
 	github.com/satori/go.uuid v1.2.0
 	github.com/streadway/amqp v0.0.0-20181205114330-a314942b2fd9
-	github.com/tidwall/pretty v0.0.0-20180105212114-65a9db5fad51 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4 // indirect
-	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
-	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.0.0
 	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
 	google.golang.org/grpc v1.19.0
