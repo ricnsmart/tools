@@ -161,7 +161,7 @@ github.com/influxdata/influxdb v1.7.0 h1:K5PJo6Qla4DtGCY2pjmyMReSvN5DUWosS0cns1O
 github.com/influxdata/influxdb v1.7.0/go.mod h1:qZna6X/4elxqT3yI9iZYdZrWWdeFOOprn86kgg4+IzY=
 github.com/influxdata/influxql v0.0.0-20180925231337-1cbfca8e56b6/go.mod h1:KpVI7okXjK6PRi3Z5B+mtKZli+R1DnZgb3N+tzevNgo=
 github.com/influxdata/line-protocol v0.0.0-20180522152040-32c6aa80de5e/go.mod h1:4kt73NQhadE3daL3WhR5EJ/J2ocX0PZzwxQ0gXJ7oFE=
-github.com/influxdata/platform v0.0.0-20181222011335-94b7c3cea0ef h1:h8mwxVMSxX6uvhKNTY6vZ/TsEtxfdgOmcJz2fUQj7Y4=
+github.com/influxdata/platform v0.0.0-20181222011335-94b7c3cea0ef h1:v3jPGxxyQ3z6hrEve8KPWj2BrA29VunsJw2LNV2L0YE=
 github.com/influxdata/platform v0.0.0-20181222011335-94b7c3cea0ef/go.mod h1:sOJoz1iHI594KeLg3aDi47V4GMT7LR+lkwIm5/QxaKo=
 github.com/influxdata/tdigest v0.0.0-20181121200506-bf2b5ad3c0a9/go.mod h1:Js0mqiSBE6Ffsg94weZZ2c+v/ciT8QRHFOap7EKDrR0=
 github.com/influxdata/usage-client v0.0.0-20160829180054-6d3895376368/go.mod h1:Wbbw6tYNvwa5dlB6304Sd+82Z3f7PmVZHVKU637d4po=
@@ -240,8 +240,8 @@ github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910/go.mod h1:
 github.com/prometheus/common v0.0.0-20180801064454-c7de2306084e/go.mod h1:daVV7qP5qjZbuso7PdcryaAu0sAZbrN9i7WWcTMWvro=
 github.com/prometheus/common v0.0.0-20181020173914-7e9e6cabbd39/go.mod h1:daVV7qP5qjZbuso7PdcryaAu0sAZbrN9i7WWcTMWvro=
 github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d/go.mod h1:c3At6R/oaqEKCNdg8wHV1ftS6bRYblBhIjjI8uT2IGk=
-github.com/ricnsmart/plugins v0.0.4 h1:qspRfYSRJWankAtQpSVNEQWYi0H97rD+Q04xYoWbaXg=
-github.com/ricnsmart/plugins v0.0.4/go.mod h1:FnoifvzC20yXLo8PU65+Z0Q9/iwAnD+7Jts+9/hvKpk=
+github.com/ricnsmart/plugins v0.0.10 h1:dcu0WCzMdSrrRyAjKMJw1wo29THMeBHzWECCNFmXdLU=
+github.com/ricnsmart/plugins v0.0.10/go.mod h1:6I7qnVgwYUxKT42wBJdaCp1oX2xJXiyP7gdhkSzrOVA=
 github.com/ricnsmart/rules v0.0.10 h1:rlJwGMLmZho1klodnE0KafPRNf2miE8f8n6aX7RAMzw=
 github.com/ricnsmart/rules v0.0.10/go.mod h1:QvA641Se0m6U1WH/N+GDY9qKM9T/6hY0DAD5zRyGdNA=
 github.com/ryanuber/go-glob v0.0.0-20170128012129-256dc444b735/go.mod h1:807d1WSdnB0XRJzKNil9Om6lcp/3a0v4qIHxIXzX/Yc=
