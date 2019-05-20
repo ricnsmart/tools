@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var RedisDB *redis.Client
+var Client *redis.Client
 
 const (
 	connectRedisFailed  = "Failed to connect to Redis"
@@ -17,13 +17,13 @@ const (
 
 func Connect(address, password string) {
 	/*Redis*/
-	RedisDB = redis.NewClient(&redis.Options{
+	Client = redis.NewClient(&redis.Options{
 		Addr:     address,
 		Password: password,
 		DB:       0, // use default DB
 	})
 
-	_, err := RedisDB.Ping().Result()
+	_, err := Client.Ping().Result()
 
 	util.FatalOnError(err, connectRedisFailed, " Address:", address)
 
@@ -40,7 +40,7 @@ func Publish(key string, i interface{}) error {
 		return err
 	}
 
-	err = RedisDB.Publish(key, bytes).Err()
+	err = Client.Publish(key, bytes).Err()
 
 	if err != nil {
 		log.Error(util.RedisPublishFailed.String(), i, err)
@@ -58,7 +58,7 @@ func Set(key string, i interface{}, expiration time.Duration) error {
 		return err
 	}
 
-	err = RedisDB.Set(key, bytes, expiration).Err()
+	err = Client.Set(key, bytes, expiration).Err()
 
 	if err != nil {
 		log.Error(util.SetCacheFailed.String(), i, err)
@@ -76,7 +76,7 @@ func HSet(key, field string, i interface{}) error {
 		return err
 	}
 
-	err = RedisDB.HSet(key, field, string(bytes)).Err()
+	err = Client.HSet(key, field, string(bytes)).Err()
 
 	if err != nil {
 		log.Error(util.SetCacheFailed.String(), i, err)
