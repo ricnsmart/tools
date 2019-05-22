@@ -37,7 +37,7 @@ func Connect(userName, password, address string) {
 }
 
 // 普通模式
-// 支持持久化
+// 无持久化
 func Send(QueueName string, request []byte) error {
 	ch, err := Conn.Channel()
 
@@ -50,7 +50,7 @@ func Send(QueueName string, request []byte) error {
 
 	q, err := ch.QueueDeclare(
 		QueueName,
-		true,
+		false,
 		true,
 		false,
 		false,
@@ -68,9 +68,8 @@ func Send(QueueName string, request []byte) error {
 		false,
 		false,
 		amqp.Publishing{
-			DeliveryMode: amqp.Persistent, // 消息 durable
-			ContentType:  "text/plain",
-			Body:         request,
+			ContentType: "text/plain",
+			Body:        request,
 		})
 
 	if err != nil {
@@ -80,17 +79,12 @@ func Send(QueueName string, request []byte) error {
 	return err
 }
 
-func Receive(QueueName string) (<-chan amqp.Delivery, error) {
-	ch, err := Conn.Channel()
-
-	if err != nil {
-		log.Error(openChannelFailed)
-		return nil, err
-	}
+// 共用channel
+func Receive(ch *amqp.Channel, QueueName string) (<-chan amqp.Delivery, error) {
 
 	q, err := ch.QueueDeclare(
 		QueueName,
-		true,
+		false,
 		true,
 		false,
 		false,

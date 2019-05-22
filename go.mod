@@ -7,9 +7,9 @@ require (
 	github.com/influxdata/platform v0.0.0-20181222011335-94b7c3cea0ef // indirect
 	github.com/labstack/gommon v0.2.7
 	github.com/ricnsmart/plugins v0.0.10
-	github.com/ricnsmart/rules v0.0.10
+	github.com/ricnsmart/rules v0.0.26
 	github.com/satori/go.uuid v1.2.0
-	github.com/streadway/amqp v0.0.0-20181205114330-a314942b2fd9
+	github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4 // indirect
 	go.mongodb.org/mongo-driver v1.0.0

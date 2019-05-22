@@ -3,6 +3,7 @@ package mq
 import (
 	"encoding/json"
 	"github.com/labstack/gommon/log"
+	"github.com/ricnsmart/tools/util"
 	"testing"
 )
 
@@ -13,6 +14,50 @@ type alarm struct {
 	AlarmType uint8
 	Current   float32
 	SetValue  float32
+}
+
+func Co() {
+	Connect("ricn", "ricnsmart2018", "dev.ricnsmart.com:5672")
+}
+
+func TestReceive(t *testing.T) {
+	Co()
+
+	ch, err := Conn.Channel()
+
+	util.FatalOnError(err, "Failed to open a channel")
+
+	// 经过测试，channel上可以申明多个queue，因为channel数量是有限的，这点很重要
+	go func() {
+		msgs2, err := Receive(ch, "test2")
+
+		util.FatalOnError(err, "Failed to receive2")
+
+		for msg := range msgs2 {
+			log.Print(string(msg.Body))
+		}
+	}()
+
+	msgs, err := Receive(ch, "test")
+
+	util.FatalOnError(err, "Failed to receive")
+
+	for msg := range msgs {
+		log.Print(string(msg.Body))
+	}
+
+}
+
+func TestSend(t *testing.T) {
+	Co()
+
+	err := Send("test", []byte("hello"))
+
+	util.FatalOnError(err, "Failed to send")
+
+	err = Send("test2", []byte("hello3"))
+
+	util.FatalOnError(err, "Failed to send")
 }
 
 func TestAlarm(t *testing.T) {
