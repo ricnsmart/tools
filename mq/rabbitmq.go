@@ -42,7 +42,7 @@ func Send(QueueName string, request []byte) error {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return err
 	}
 
@@ -58,7 +58,7 @@ func Send(QueueName string, request []byte) error {
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return err
 	}
 
@@ -73,7 +73,7 @@ func Send(QueueName string, request []byte) error {
 		})
 
 	if err != nil {
-		log.Error(publishMessageFailed)
+		log.Errorf(`%v,%v`, publishMessageFailed, err)
 	}
 
 	return err
@@ -92,7 +92,7 @@ func Receive(ch *amqp.Channel, QueueName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return nil, err
 	}
 
@@ -107,7 +107,7 @@ func Receive(ch *amqp.Channel, QueueName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(registerConsumerFailed)
+		log.Errorf(`%v,%v`, registerConsumerFailed, err)
 		return nil, err
 	}
 
@@ -119,7 +119,7 @@ func Producer(queueName string, request []byte) error {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return err
 	}
 
@@ -135,7 +135,7 @@ func Producer(queueName string, request []byte) error {
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return err
 	}
 
@@ -151,7 +151,7 @@ func Producer(queueName string, request []byte) error {
 		})
 
 	if err != nil {
-		log.Error(publishMessageFailed)
+		log.Errorf(`%v,%v`, publishMessageFailed, err)
 		return err
 	}
 
@@ -163,7 +163,7 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return nil, err
 	}
 
@@ -177,7 +177,7 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return nil, err
 	}
 
@@ -190,7 +190,7 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(setQoSFailed)
+		log.Errorf(`%v,%v`, setQoSFailed, err)
 		return nil, err
 	}
 
@@ -205,7 +205,7 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(registerConsumerFailed)
+		log.Errorf(`%v,%v`, registerConsumerFailed, err)
 		return nil, err
 	}
 
@@ -218,7 +218,7 @@ func Publish(exchangeName string, request []byte) error {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return err
 	}
 
@@ -235,7 +235,7 @@ func Publish(exchangeName string, request []byte) error {
 	)
 
 	if err != nil {
-		log.Error(declareExchangeFailed)
+		log.Errorf(`%v,%v`, declareExchangeFailed, err)
 		return err
 	}
 
@@ -252,7 +252,7 @@ func Publish(exchangeName string, request []byte) error {
 		})
 
 	if err != nil {
-		log.Error(publishMessageFailed)
+		log.Errorf(`%v,%v`, publishMessageFailed, err)
 	}
 
 	return nil
@@ -262,7 +262,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return nil, err
 	}
 
@@ -277,7 +277,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(declareExchangeFailed)
+		log.Errorf(`%v,%v`, declareExchangeFailed, err)
 		return nil, err
 	}
 
@@ -291,7 +291,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return nil, err
 	}
 
@@ -303,7 +303,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 		nil)
 
 	if err != nil {
-		log.Error(bindQueueFailed)
+		log.Errorf(`%v,%v`, bindQueueFailed, err)
 		return nil, err
 	}
 
@@ -318,7 +318,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 	)
 
 	if err != nil {
-		log.Error(registerConsumerFailed)
+		log.Errorf(`%v,%v`, registerConsumerFailed, err)
 		return nil, err
 	}
 
@@ -331,7 +331,7 @@ func RoutePublish(exchangeName, key string, request []byte) error {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return err
 	}
 
@@ -348,7 +348,7 @@ func RoutePublish(exchangeName, key string, request []byte) error {
 	)
 
 	if err != nil {
-		log.Error(declareExchangeFailed)
+		log.Errorf(`%v,%v`, declareExchangeFailed, err)
 		return err
 	}
 
@@ -363,7 +363,7 @@ func RoutePublish(exchangeName, key string, request []byte) error {
 		})
 
 	if err != nil {
-		log.Error(publishMessageFailed)
+		log.Errorf(`%v,%v`, publishMessageFailed, err)
 	}
 
 	return nil
@@ -382,7 +382,7 @@ func RouteConsume(ch *amqp.Channel, exchangeName, key string) (<-chan amqp.Deliv
 	)
 
 	if err != nil {
-		log.Error(declareExchangeFailed)
+		log.Errorf(`%v,%v`, declareExchangeFailed, err)
 		return nil, err
 	}
 
@@ -396,7 +396,7 @@ func RouteConsume(ch *amqp.Channel, exchangeName, key string) (<-chan amqp.Deliv
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return nil, err
 	}
 
@@ -408,7 +408,7 @@ func RouteConsume(ch *amqp.Channel, exchangeName, key string) (<-chan amqp.Deliv
 		nil)
 
 	if err != nil {
-		log.Error(bindQueueFailed)
+		log.Errorf(`%v,%v`, bindQueueFailed, err)
 		return nil, err
 	}
 
@@ -423,7 +423,7 @@ func RouteConsume(ch *amqp.Channel, exchangeName, key string) (<-chan amqp.Deliv
 	)
 
 	if err != nil {
-		log.Error(registerConsumerFailed)
+		log.Errorf(`%v,%v`, registerConsumerFailed, err)
 		return nil, err
 	}
 
@@ -435,7 +435,7 @@ func TopicEmit(exchangeName, key string, request []byte) error {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return err
 	}
 
@@ -452,7 +452,7 @@ func TopicEmit(exchangeName, key string, request []byte) error {
 	)
 
 	if err != nil {
-		log.Error(declareExchangeFailed)
+		log.Errorf(`%v,%v`, declareExchangeFailed, err)
 		return err
 	}
 
@@ -467,7 +467,7 @@ func TopicEmit(exchangeName, key string, request []byte) error {
 		})
 
 	if err != nil {
-		log.Error(publishMessageFailed)
+		log.Errorf(`%v,%v`, publishMessageFailed, err)
 	}
 
 	return nil
@@ -481,7 +481,7 @@ func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, er
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return nil, err
 	}
 
@@ -496,7 +496,7 @@ func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, er
 	)
 
 	if err != nil {
-		log.Error(declareExchangeFailed)
+		log.Errorf(`%v,%v`, declareExchangeFailed, err)
 		return nil, err
 	}
 
@@ -510,7 +510,7 @@ func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, er
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return nil, err
 	}
 
@@ -523,7 +523,7 @@ func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, er
 			nil)
 
 		if err != nil {
-			log.Error(bindQueueFailed)
+			log.Errorf(`%v,%v`, bindQueueFailed, err)
 			return nil, err
 		}
 	}
@@ -539,7 +539,7 @@ func TopicReceive(exchangeName string, keys ...string) (<-chan amqp.Delivery, er
 	)
 
 	if err != nil {
-		log.Error(registerConsumerFailed)
+		log.Errorf(`%v,%v`, registerConsumerFailed, err)
 		return nil, err
 	}
 
@@ -551,7 +551,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 	ch, err := Conn.Channel()
 
 	if err != nil {
-		log.Error(openChannelFailed)
+		log.Errorf(`%v,%v`, openChannelFailed, err)
 		return nil, err
 	}
 
@@ -567,7 +567,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 	)
 
 	if err != nil {
-		log.Error(declareQueueFailed)
+		log.Errorf(`%v,%v`, declareQueueFailed, err)
 		return nil, err
 	}
 
@@ -582,7 +582,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 	)
 
 	if err != nil {
-		log.Error(registerConsumerFailed)
+		log.Errorf(`%v,%v`, registerConsumerFailed, err)
 		return nil, err
 	}
 
@@ -601,7 +601,7 @@ func RPCClient(queueName string, request []byte) (reply []byte, err error) {
 		})
 
 	if err != nil {
-		log.Error(publishMessageFailed)
+		log.Errorf(`%v,%v`, publishMessageFailed, err)
 		return nil, err
 	}
 
@@ -671,7 +671,7 @@ func RPCServer(queueName string, f func([]byte) []byte) {
 
 			if err != nil {
 				// 推送失败可能导致client一直在等待，所以client需要做超时设置
-				log.Error(publishMessageFailed)
+				log.Errorf(`%v,%v`, publishMessageFailed, err)
 				d.Ack(false)
 				continue
 			}
