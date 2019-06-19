@@ -213,7 +213,6 @@ func Worker(queueName string) (<-chan amqp.Delivery, error) {
 }
 
 // fanout，广播模式
-// 开启持久化
 func Publish(exchangeName string, request []byte) error {
 	ch, err := Conn.Channel()
 
@@ -227,7 +226,7 @@ func Publish(exchangeName string, request []byte) error {
 	err = ch.ExchangeDeclare(
 		exchangeName,
 		"fanout",
-		true,
+		false,
 		true,
 		false,
 		false,
@@ -245,10 +244,8 @@ func Publish(exchangeName string, request []byte) error {
 		false,
 		false,
 		amqp.Publishing{
-			// 开启
-			DeliveryMode: amqp.Persistent, // 消息 durable
-			ContentType:  "text/plain",
-			Body:         request,
+			ContentType: "text/plain",
+			Body:        request,
 		})
 
 	if err != nil {
@@ -269,7 +266,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 	err = ch.ExchangeDeclare(
 		exchangeName,
 		"fanout",
-		true,
+		false,
 		true,
 		false,
 		false,
@@ -283,7 +280,7 @@ func Subscribe(exchangeName string) (<-chan amqp.Delivery, error) {
 
 	q, err := ch.QueueDeclare(
 		"",
-		true,
+		false,
 		true,
 		true,
 		false,

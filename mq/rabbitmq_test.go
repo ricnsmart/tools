@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/ricnsmart/tools/util"
 	"testing"
+	"time"
 )
 
 type alarm struct {
@@ -51,13 +52,40 @@ func TestReceive(t *testing.T) {
 func TestSend(t *testing.T) {
 	Co()
 
-	err := Send("test", []byte("hello"))
+	//err := Send("test", []byte("hello"))
+	//
+	//util.FatalOnError(err, "Failed to send")
+
+	d := struct {
+		ID    string
+		Param string
+		Value interface{}
+	}{ID: "91b19ec8-52f5-4b3d-8385-8c4ba9ebac6f", Param: "Ia", Value: 88}
+
+	b, _ := json.Marshal(d)
+
+	err := Send("param", b)
 
 	util.FatalOnError(err, "Failed to send")
+}
 
-	err = Send("test2", []byte("hello3"))
+func TestPublish(t *testing.T) {
+	Co()
 
-	util.FatalOnError(err, "Failed to send")
+	d := struct {
+		ID    string
+		Param string
+		Value interface{}
+	}{ID: "91b19ec8-52f5-4b3d-8385-8c4ba9ebac6f", Param: "Ia", Value: 88}
+
+	b, _ := json.Marshal(d)
+
+	err := Publish("param", b)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 func TestAlarm(t *testing.T) {
@@ -117,6 +145,35 @@ func TestRoutePublish(t *testing.T) {
 
 	if err != nil {
 		log.Fatal(err)
+	}
+
+}
+
+func TestRoutePublish2(t *testing.T) {
+
+	Connect("ricn", "ricnsmart2018", "dev.ricnsmart.com:5672")
+
+	c, err := Conn.Channel()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ch, err := Receive(c, "test2")
+
+	go func() {
+		time.Sleep(5000)
+
+		err = c.Cancel("test2", true)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+	}()
+
+	for s := range ch {
+		log.Print(s.Body)
 	}
 
 }

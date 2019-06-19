@@ -6,6 +6,7 @@ require (
 	github.com/influxdata/influxdb v1.7.0
 	github.com/influxdata/platform v0.0.0-20181222011335-94b7c3cea0ef // indirect
 	github.com/labstack/gommon v0.2.7
+	github.com/nsqio/go-nsq v1.0.7
 	github.com/ricnsmart/plugins v0.0.10
 	github.com/ricnsmart/rules v0.0.26
 	github.com/satori/go.uuid v1.2.0
