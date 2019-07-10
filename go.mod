@@ -7,8 +7,8 @@ require (
 	github.com/influxdata/platform v0.0.0-20181222011335-94b7c3cea0ef // indirect
 	github.com/labstack/gommon v0.2.7
 	github.com/nsqio/go-nsq v1.0.7
-	github.com/ricnsmart/plugins v0.0.10
-	github.com/ricnsmart/rules v0.0.26
+	github.com/ricnsmart/plugins v0.0.18
+	github.com/ricnsmart/rules v0.0.28
 	github.com/satori/go.uuid v1.2.0
 	github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

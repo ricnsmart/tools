@@ -62,6 +62,26 @@ func (frame *RTUFrame) Bytes() []byte {
 	return bytes
 }
 
+// Bytes returns the Modbus byte stream based on the RTUFrame fields
+// CRC校验使用大端模式
+func (frame *RTUFrame) Bytes2() []byte {
+	bytes := make([]byte, 2)
+
+	bytes[0] = frame.Address
+	bytes[1] = frame.Function
+	bytes = append(bytes, frame.Data...)
+
+	// Calculate the CRC.
+	pLen := len(bytes)
+	crc := crcModbus(bytes[0:pLen])
+
+	// Add the CRC.
+	bytes = append(bytes, []byte{0, 0}...)
+	binary.BigEndian.PutUint16(bytes[pLen:pLen+2], crc)
+
+	return bytes
+}
+
 // GetFunction returns the Modbus function code.
 func (frame *RTUFrame) GetFunction() uint8 {
 	return frame.Function

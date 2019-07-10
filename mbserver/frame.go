@@ -5,6 +5,7 @@ import "encoding/binary"
 // Framer is the interface that wraps Modbus frames.
 type Framer interface {
 	Bytes() []byte
+	Bytes2() []byte
 	Copy() Framer
 	GetData() []byte
 	GetFunction() uint8

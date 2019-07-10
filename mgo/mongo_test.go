@@ -30,19 +30,25 @@ update bson.D{{"$set", map} 可以使用
 */
 
 func TestFindLowerCase(t *testing.T) {
-	Connect("mongodb://39.104.186.37:27017", "ricnsmart_dev")
+	Connect("mongodb://ricn:ricn2019@39.104.186.37:27017", "ricnsmart_dev")
 
-	var d plugins.VJ
+	//var d plugins.VJ
 
 	//m:= make(map[string]interface{})
 
-	err := MongoDB.Collection(rules.DevicesCollection).FindOne(context.Background(), bson.D{{"DeviceID", "fd2ca1f0-d74c-47f9-872f-89c9688dae19"}}).Decode(&d)
+	var r plugins.RCNVJ
+
+	var j interface{}
+
+	j = r
+
+	err := MongoDB.Collection(rules.DevicesCollection).FindOne(context.Background(), bson.D{{"DeviceID", "85268189-6160-4dae-8448-488e272139be"}}).Decode(&j)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Infof("%+v", d)
+	log.Infof("%+v", j)
 
 }
 
