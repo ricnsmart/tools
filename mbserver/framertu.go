@@ -37,6 +37,31 @@ func NewRTUFrame(packet []byte) (*RTUFrame, error) {
 	return frame, nil
 }
 
+// NewRTUFrame converts a packet to a Modbus RTU frame.
+// CRC校验使用大端模式
+func NewRTUFrame2(packet []byte) (*RTUFrame, error) {
+	// Check the that the packet length.
+	if len(packet) < 5 {
+		return nil, fmt.Errorf("RTU Frame error: packet less than 5 bytes: %v", packet)
+	}
+
+	// Check the CRC.
+	pLen := len(packet)
+	crcExpect := binary.BigEndian.Uint16(packet[pLen-2 : pLen])
+	crcCalc := crcModbus(packet[0 : pLen-2])
+	if crcCalc != crcExpect {
+		return nil, fmt.Errorf("RTU Frame error: CRC (expected 0x%x, got 0x%x)", crcExpect, crcCalc)
+	}
+
+	frame := &RTUFrame{
+		Address:  uint8(packet[0]),
+		Function: uint8(packet[1]),
+		Data:     packet[2 : pLen-2],
+	}
+
+	return frame, nil
+}
+
 // Copy the RTUFrame.
 func (frame *RTUFrame) Copy() Framer {
 	copy := *frame
