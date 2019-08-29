@@ -60,8 +60,12 @@ var (
 	WriteInfluxFailed Exception = 9030
 	QueryInfluxFailed Exception = 9031
 
+	// 设备类
+	DeviceUnRegister   Exception = 10001
+	ActiveDeviceFailed Exception = 10002
+
 	// 通用
-	UnknownType Exception = 10000
+	UnknownType Exception = 30000
 )
 
 func (e Exception) Error() error {
@@ -132,6 +136,10 @@ func (e Exception) String() string {
 		str = "写入Influx失败"
 	case QueryInfluxFailed:
 		str = "查询Influx失败"
+	case DeviceUnRegister:
+		str = "设备未注册"
+	case ActiveDeviceFailed:
+		str = "激活设备失败"
 	case UnknownType:
 		str = "未知的类型"
 	default:
@@ -203,6 +211,10 @@ func (e Exception) Name() string {
 		str = "WriteInfluxFailed"
 	case QueryInfluxFailed:
 		str = "QueryInfluxFailed"
+	case DeviceUnRegister:
+		str = "DeviceUnRegister"
+	case ActiveDeviceFailed:
+		str = "ActiveDeviceFailed"
 	case UnknownType:
 		str = "UnknownType"
 	default:
