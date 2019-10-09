@@ -15,11 +15,7 @@ message Address {
 
 message Location {
     string Count = 1;
-    Geocodes Geocodes = 2;
-}
-
-message Geocodes {
-    repeated Geocode Geocode = 1;
+    repeated Geocode Geocodes = 2;
 }
 
 message Geocode {
