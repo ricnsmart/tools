@@ -37,7 +37,7 @@ func CheckDomainRecord(request *DomainRecord) (*CheckReply, error) {
 	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &CheckReply{}, err
 	}
 
@@ -57,7 +57,7 @@ func UpdateDomainRecord(request *DomainRecord) (*NullReply, error) {
 	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &NullReply{}, err
 	}
 
@@ -77,7 +77,7 @@ func DeleteGetDomainRecord(request *DelRequest) (*NullReply, error) {
 	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &NullReply{}, err
 	}
 
@@ -98,7 +98,7 @@ func GetDomainRecords(request *GetRequest) (*GetReply, error) {
 	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &GetReply{}, err
 	}
 
@@ -119,7 +119,7 @@ func AddDomainRecord(record *DomainRecord) (*DomainRecord, error) {
 	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &DomainRecord{}, err
 	}
 
@@ -139,7 +139,7 @@ func SetDomainRecordStatus(request *DomainRecord) (*NullReply, error) {
 	conn, err := grpc.Dial(dnsAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &NullReply{}, err
 	}
 

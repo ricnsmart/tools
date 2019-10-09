@@ -37,7 +37,7 @@ func BatchCheckDeviceNames(request *BatchDeviceInfo) (*BatchRegisterReply, error
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &BatchRegisterReply{}, err
 	}
 
@@ -58,7 +58,7 @@ func BatchRegisterDeviceWithApplyId(request *BatchRegisterRequest) (*BatchRegist
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &BatchRegisterReply{}, err
 	}
 
@@ -79,7 +79,7 @@ func DeleteDevice(device *Device) (*NullReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &NullReply{}, err
 	}
 
@@ -99,7 +99,7 @@ func GetAllDevices(request *GetRequest) (*GetReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问域名微服务失败: %v", err)
+		log.Errorf("访问域名微服务失败: %v", err)
 		return &GetReply{}, err
 	}
 
@@ -120,7 +120,7 @@ func DisableThing(device *Device) (*NullReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &NullReply{}, err
 	}
 
@@ -141,7 +141,7 @@ func EnableThing(device *Device) (*NullReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &NullReply{}, err
 	}
 
@@ -162,7 +162,7 @@ func Pub(request *PubRequest) (*PubReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &PubReply{}, err
 	}
 
@@ -182,7 +182,7 @@ func GetDeviceStatus(device *Device) (*GetSingleDeviceStatusReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &GetSingleDeviceStatusReply{}, err
 	}
 
@@ -202,7 +202,7 @@ func BatchGetDeviceState(request *BatchDeviceInfo) (*GetDeviceStatusReply, error
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &GetDeviceStatusReply{}, err
 	}
 
@@ -222,7 +222,7 @@ func QueryDeviceDetail(device *Device) (*QueryDeviceReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &QueryDeviceReply{}, err
 	}
 
@@ -242,7 +242,7 @@ func QueryPageByApplyId(request *QueryPageRequest) (*QueryPageReply, error) {
 	conn, err := grpc.Dial(iotAddress, grpc.WithTransportCredentials(cred))
 
 	if err != nil {
-		log.Fatalf("访问物联网平台微服务失败: %v", err)
+		log.Errorf("访问物联网平台微服务失败: %v", err)
 		return &QueryPageReply{}, err
 	}
 

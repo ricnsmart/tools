@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package amap;
+
+service Amap {
+    // 正向地理编码： 将地址描述信息转换成地理坐标（经纬度)
+    rpc ForwardGeocode (Address) returns (Location) {
+    }
+}
+
+message Address {
+    string Street = 1;
+    string City = 2;
+}
+
+message Location {
+    string longitude = 1;
+    string latitude = 2;
+}

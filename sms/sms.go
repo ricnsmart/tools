@@ -37,7 +37,7 @@ func SendSMS(PhoneNumbers, TemplateCode string, TemplateParam string) (err error
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(smsAddress, grpc.WithTransportCredentials(cred))
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Errorf("did not connect: %v", err)
 	}
 
 	c := NewSMSClient(conn)
