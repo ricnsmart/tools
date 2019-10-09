@@ -14,6 +14,14 @@ message Address {
 }
 
 message Location {
-    string longitude = 1;
-    string latitude = 2;
+    string Count = 1;
+    Geocodes Geocodes = 2;
+}
+
+message Geocodes {
+    repeated Geocode Geocode = 1;
+}
+
+message Geocode {
+    string Location = 1;
 }
