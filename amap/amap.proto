@@ -20,4 +20,10 @@ message Location {
 
 message Geocode {
     string Location = 1;
+    string Address = 2;
+    string Country = 3;
+    string Province = 4;
+    string City = 5;
+    string District = 6;
+    string Street = 7;
 }
