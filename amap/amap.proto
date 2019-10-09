@@ -25,5 +25,4 @@ message Geocode {
     string Province = 4;
     string City = 5;
     string District = 6;
-    string Street = 7;
 }
