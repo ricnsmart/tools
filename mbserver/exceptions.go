@@ -38,15 +38,15 @@ func (e Exception) String() string {
 	var str string
 	switch e {
 	case Success:
-		str = fmt.Sprintf("Success")
+		str = fmt.Sprintf("成功")
 	case IllegalFunction:
-		str = fmt.Sprintf("IllegalFunction")
+		str = fmt.Sprintf("从站接收到不支持的功能码!")
 	case IllegalDataAddress:
-		str = fmt.Sprintf("IllegalDataAddress")
+		str = fmt.Sprintf("接收到无效的数据地址或者是 请求寄存器不在有效的寄存器范围内")
 	case IllegalDataValue:
-		str = fmt.Sprintf("IllegalDataValue")
+		str = fmt.Sprintf("读写数据时寄存器数量超出允许范围或字节数!=寄存器数*2;必须连续写的寄存器写入不完整")
 	case SlaveDeviceFailure:
-		str = fmt.Sprintf("SlaveDeviceFailure")
+		str = fmt.Sprintf("遥控操作失败，或异常码 02、03 规定之外的 情况")
 	case AcknowledgeSlave:
 		str = fmt.Sprintf("AcknowledgeSlave")
 	case SlaveDeviceBusy:

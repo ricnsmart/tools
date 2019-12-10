@@ -37,6 +37,7 @@ func registerAddressAndValue(frame Framer) (int, uint16) {
 	return register, value
 }
 
+// 用于读寄存器
 // SetDataWithRegisterAndNumber sets the RTUFrame Data byte field to hold a register and number of registers
 func SetDataWithRegisterAndNumber(frame Framer, register uint16, number uint16) {
 	data := make([]byte, 4)
@@ -45,6 +46,7 @@ func SetDataWithRegisterAndNumber(frame Framer, register uint16, number uint16) 
 	frame.SetData(data)
 }
 
+// 仅用于写寄存器，并且要求寄存器值类型为uint16
 // SetDataWithRegisterAndNumberAndValues sets the TCPFrame Data byte field to hold a register and number of registers and values
 func SetDataWithRegisterAndNumberAndValues(frame Framer, register uint16, number uint16, values []uint16) {
 	data := make([]byte, 5+len(values)*2)
@@ -55,6 +57,7 @@ func SetDataWithRegisterAndNumberAndValues(frame Framer, register uint16, number
 	frame.SetData(data)
 }
 
+// 仅用于写寄存器
 // SetDataWithRegisterAndNumberAndBytes sets the TCPFrame Data byte field to hold a register and number of registers and coil bytes
 func SetDataWithRegisterAndNumberAndBytes(frame Framer, register uint16, number uint16, bytes []byte) {
 	data := make([]byte, 5+len(bytes))
@@ -62,5 +65,13 @@ func SetDataWithRegisterAndNumberAndBytes(frame Framer, register uint16, number 
 	binary.BigEndian.PutUint16(data[2:4], number)
 	data[4] = byte(len(bytes))
 	copy(data[5:], bytes)
+	frame.SetData(data)
+}
+
+// 仅用于遥控操作寄存器
+func SetDateForControl(frame Framer, register uint16, bytes []byte) {
+	data := make([]byte, 4)
+	binary.BigEndian.PutUint16(data[0:2], register)
+	copy(data[2:], bytes)
 	frame.SetData(data)
 }
