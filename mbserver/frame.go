@@ -69,9 +69,9 @@ func SetDataWithRegisterAndNumberAndBytes(frame Framer, register uint16, number 
 }
 
 // 仅用于遥控操作寄存器
-func SetDateForControl(frame Framer, register uint16, bytes []byte) {
+func SetDateForControl(frame Framer, register uint16, value uint16) {
 	data := make([]byte, 4)
 	binary.BigEndian.PutUint16(data[0:2], register)
-	copy(data[2:], bytes)
+	binary.BigEndian.PutUint16(data[2:4], value)
 	frame.SetData(data)
 }
