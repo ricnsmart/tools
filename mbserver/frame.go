@@ -22,19 +22,9 @@ func GetException(frame Framer) (exception Exception) {
 	return exception
 }
 
-func registerAddressAndNumber(frame Framer) (register int, numRegs int, endRegister int) {
+func GetRegister(frame Framer) uint16 {
 	data := frame.GetData()
-	register = int(binary.BigEndian.Uint16(data[0:2]))
-	numRegs = int(binary.BigEndian.Uint16(data[2:4]))
-	endRegister = register + numRegs
-	return register, numRegs, endRegister
-}
-
-func registerAddressAndValue(frame Framer) (int, uint16) {
-	data := frame.GetData()
-	register := int(binary.BigEndian.Uint16(data[0:2]))
-	value := binary.BigEndian.Uint16(data[2:4])
-	return register, value
+	return binary.BigEndian.Uint16(data[0:2])
 }
 
 // 用于读寄存器
