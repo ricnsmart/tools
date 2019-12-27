@@ -39,25 +39,7 @@ import "sync"
 var crcTable []uint16
 var mux sync.Mutex
 
-func crcModbus(data []byte) (crc uint16) {
-	if crcTable == nil {
-		// Thread safe initialization.
-		mux.Lock()
-		if crcTable == nil {
-			crcInitTable()
-		}
-		mux.Unlock()
-	}
-
-	crc = 0xffff
-	for _, v := range data {
-		crc = (crc >> 8) ^ crcTable[(crc^uint16(v))&0x00FF]
-	}
-
-	return crc
-}
-
-func CrcModbus(data []byte) (crc uint16) {
+func CRCModbus(data []byte) (crc uint16) {
 	if crcTable == nil {
 		// Thread safe initialization.
 		mux.Lock()
