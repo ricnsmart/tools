@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package vms;
+
+service VMS {
+    rpc Call (Request) returns (Reply) {
+    }
+}
+
+message Request {
+    string CalledNumber = 1;
+    string TtsCode = 2;
+    string TtsParam = 3;
+}
+
+message Reply {
+    string Code = 1;
+    string Message = 2;
+    string RequestId = 3;
+    string CallId = 4;
+}
