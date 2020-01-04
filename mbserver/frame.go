@@ -5,7 +5,6 @@ import "encoding/binary"
 // Framer is the interface that wraps Modbus frames.
 type Framer interface {
 	Bytes() []byte
-	Bytes2() []byte
 	Copy() Framer
 	GetData() []byte
 	GetFunction() uint8
@@ -22,6 +21,7 @@ func GetException(frame Framer) (exception Exception) {
 	return exception
 }
 
+// 获取读取响应的寄存器地址
 func GetRegister(frame Framer) uint16 {
 	data := frame.GetData()
 	return binary.BigEndian.Uint16(data[0:2])
