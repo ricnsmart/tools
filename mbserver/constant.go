@@ -1,6 +1,6 @@
 package mbserver
 
 const (
-	Read  = 0x03
-	Write = 0x10
+	Read  = uint8(0x03)
+	Write = uint8(0x10)
 )
