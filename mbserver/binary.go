@@ -75,9 +75,7 @@ func (bigEndian) Float32ToBytes(value float32) []byte {
 
 // Float32ToBytes converts an array of float32 to a big endian array of bytes
 func (bigEndian) Float32sToBytes(values []float32) []byte {
-	l := len(values)
-	buf := make([]byte, 4*l)
-
+	buf := make([]byte, 0)
 	for _, value := range values {
 		bits := math.Float32bits(value)
 		bytes := make([]byte, 4)
@@ -217,9 +215,7 @@ func (littleEndian) Float32ToBytes(value float32) []byte {
 
 // Float32ToBytes converts an array of float32 to a little endian array of bytes
 func (littleEndian) Float32sToBytes(values []float32) []byte {
-	l := len(values)
-	buf := make([]byte, 4*l)
-
+	buf := make([]byte, 0)
 	for _, value := range values {
 		bits := math.Float32bits(value)
 		bytes := make([]byte, 4)
