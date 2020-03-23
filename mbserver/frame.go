@@ -43,7 +43,7 @@ func SetDataWithRegisterAndNumberAndValues(frame Framer, register uint16, number
 	binary.BigEndian.PutUint16(data[0:2], register)
 	binary.BigEndian.PutUint16(data[2:4], number)
 	data[4] = uint8(len(values) * 2)
-	copy(data[5:], Uint16ToBytes(values))
+	copy(data[5:], BigEndian.Uint16ToBytes(values))
 	frame.SetData(data)
 }
 
